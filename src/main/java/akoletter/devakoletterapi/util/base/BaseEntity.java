@@ -15,37 +15,25 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
+  @Column(name = "seq_no")
   private long seqNo = 1;
+
+  @Column(name = "use_yn")
   private String useYn = "Y";
   @CreatedBy
-  @Column(updatable = false)
+  @Column(updatable = false, name = "frst_rgst_id")
   private String frstRgstId;
   @CreationTimestamp
-  @Column(updatable = false)
+  @Column(updatable = false, name = "frst_rgst_dt")
   private LocalDateTime frstRgstDt;
   @LastModifiedBy
+  @Column(name = "last_mdfy_id")
   private String lastMdfyId;
   @UpdateTimestamp
+  @Column(name = "last_mdfy_dt")
   private LocalDateTime lastMdfyDt;
 
   public BaseEntity() {
-  }
-
-  @PrePersist
-  public void prePersist() {
-    try {
-
-    }catch (Exception e){
-
-    }
-  }
-
-  @PreUpdate
-  public void preUpdate() {
-    try {
-
-    }catch (Exception e){
-    }
   }
 
   public BaseEntity(long seqNo, String frstRgstId,
