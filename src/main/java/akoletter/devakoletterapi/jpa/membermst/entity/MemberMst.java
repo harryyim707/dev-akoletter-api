@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 public class MemberMst extends BaseEntity {
 
     @Id
-    @Column(name = "unq_user_id")
+    @Column(name = "unq_usr_id")
     @Schema(description = "유저의 고유 아이디값", nullable = false)
-    private String unqUserId;
+    private String unqUsrId;
     @Column(name = "usr_nm")
     @Schema(description = "유저이름", nullable = false)
     private String usrNm;

@@ -1,4 +1,14 @@
 package akoletter.devakoletterapi.jpa.membersub.entity;
 
-public class MemberSubPk {
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class MemberSubPk implements Serializable {
+  private static final long serialVersionUID = -3707559740976324731L;
+  private String unqUsrId;
 }
