@@ -1,4 +1,8 @@
 package akoletter.devakoletterapi.jpa.commentmst.repo;
 
-public interface CommentMstRepository {
+import akoletter.devakoletterapi.jpa.commentmst.entity.CommentMst;
+import akoletter.devakoletterapi.jpa.commentmst.entity.CommentMstPk;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CommentMstRepository extends JpaRepository<CommentMst, CommentMstPk> {
 }

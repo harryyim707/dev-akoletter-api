@@ -11,5 +11,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class MemberMstPk implements Serializable {
 
-    private String UnqUserId;
+    private String unqUserId;
 }

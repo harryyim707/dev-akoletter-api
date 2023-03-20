@@ -1,4 +1,4 @@
 package akoletter.devakoletterapi.jpa.likemst.entity;
 
-public class LikekMst {
+public class LikeMst {
 }

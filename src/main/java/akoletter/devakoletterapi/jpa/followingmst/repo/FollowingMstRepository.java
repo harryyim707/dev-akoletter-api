@@ -1,4 +1,8 @@
 package akoletter.devakoletterapi.jpa.followingmst.repo;
 
-public interface FollowingMstRepository {
+import akoletter.devakoletterapi.jpa.followingmst.entity.FollowingMst;
+import akoletter.devakoletterapi.jpa.followingmst.entity.FollowingMstPk;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FollowingMstRepository extends JpaRepository<FollowingMst, FollowingMstPk> {
 }
