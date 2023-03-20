@@ -19,24 +19,24 @@ import java.time.LocalDateTime;
 public class MemberMst extends BaseEntity {
 
     @Id
-    @Column(name = "unq_user_id")
+    @Column(name = "unq_usr_id")
     @Schema(description = "유저의 고유 아이디값", nullable = false)
-    private String UnqUserId;
+    private String unqUsrId;
     @Column(name = "usr_nm")
     @Schema(description = "유저이름", nullable = false)
-    private String UsrNm;
+    private String usrNm;
     @Id
     @Column(name = "usr_id")
     @Schema(description = "유저 아이디")
-    private String UsrId;
+    private String usrId;
     @Column(name = "usr_email")
     @Schema(description = "유저이메일")
-    private String UsrEmail;
+    private String usrEmail;
     @Column(name = "usr_pwd")
     @Schema(description = "유저 패스워드", nullable = false)
-    private String UsrPwd;
+    private String usrPwd;
     @Column(name = "usr_tel_no")
     @Schema(description = "유저 전화번호")
-    private String UsrTelNo;
+    private String usrTelNo;
 
 }

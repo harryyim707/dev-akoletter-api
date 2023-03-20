@@ -1,4 +1,8 @@
 package akoletter.devakoletterapi.jpa.membersub.repo;
 
-public interface MemberSubRepository {
+import akoletter.devakoletterapi.jpa.membersub.entity.MemberSub;
+import akoletter.devakoletterapi.jpa.membersub.entity.MemberSubPk;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MemberSubRepository extends JpaRepository<MemberSub, MemberSubPk> {
 }
