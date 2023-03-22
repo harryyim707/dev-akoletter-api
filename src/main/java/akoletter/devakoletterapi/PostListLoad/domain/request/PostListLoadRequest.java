@@ -1,4 +1,4 @@
-package loginpage.domain.request;
+package akoletter.devakoletterapi.PostListLoad.domain.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class LoginUserRequest {
+public class PostListLoadRequest {
 
     @Schema(
-            description = "도서의 유니크한 키 값. 실제 도서에 부여되는 값이다.",
+            description = "불러올 게시글 수",
             hidden = true
     )
-    private String bkIsbn; //api 명세서 ..정하면서 작성예정.
+    private long postNm;
 }
