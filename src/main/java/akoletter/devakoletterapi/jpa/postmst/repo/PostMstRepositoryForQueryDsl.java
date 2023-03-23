@@ -4,14 +4,16 @@ import akoletter.devakoletterapi.PostListLoad.domain.response.PostListLoadRespon
 import akoletter.devakoletterapi.jpa.postmst.entity.PostMst;
 /*import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;*/
+import jakarta.persistence.Entity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @RequiredArgsConstructor
 @Repository
+
 public class PostMstRepositoryForQueryDsl {
+
 
 /*    private final JPAQueryFactory queryFactory;
     private final PostMst postMst;*/
