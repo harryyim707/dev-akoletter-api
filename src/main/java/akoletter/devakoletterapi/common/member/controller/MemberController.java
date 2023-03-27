@@ -1,8 +1,8 @@
-package akoletter.devakoletterapi.common.auth.controller;
+package akoletter.devakoletterapi.common.member.controller;
 
-import akoletter.devakoletterapi.common.auth.domain.request.SignUpRequest;
-import akoletter.devakoletterapi.common.auth.domain.response.SignUpResponse;
-import akoletter.devakoletterapi.common.auth.service.AuthService;
+import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
+import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
+import akoletter.devakoletterapi.common.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/member")
 @RequiredArgsConstructor
-public class AuthController {
-  private final AuthService authService;
+public class MemberController {
+  private final MemberService memberService;
 
   @PostMapping("/join")
   public SignUpResponse signUp(@Valid @RequestBody SignUpRequest request){
-    return authService.signUp(request);
+    return memberService.signUp(request);
   }
 }
