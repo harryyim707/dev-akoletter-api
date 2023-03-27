@@ -21,24 +21,8 @@ public class PostListLoadServiceImpl implements PostListLoadService{
 
 
     public List<PostListLoadResponse> postload(PostListLoadRequest request){
-
-        /*List<PostListLoadResponse> resultList = postMstRepositoryForQueryDsl.
-
         PostMst post = new PostMst();
         LocalDateTime now = LocalDateTime.now();
-
-        if(memberMst == null){
-            member.setUnqUsrId(passwordEncoder.encode(request.getUsrId()));
-            member.setUsrId(request.getUsrId());
-            member.setUsrPwd(passwordEncoder.encode(request.getUsrPwd()));
-            member.setUsrNm(request.getUsrNm());
-            member.setUsrEmail(request.getUsrEmail());
-            member.setUsrTelNo(request.getUsrTelNo());
-            memberMstRepository.save(member);
-            result.setSuccess(true);
-        }
-        else result.setSuccess(false);
-        return result;*/
         List<PostListLoadResponse> resultList = new ArrayList<>();
         return resultList;
     }
