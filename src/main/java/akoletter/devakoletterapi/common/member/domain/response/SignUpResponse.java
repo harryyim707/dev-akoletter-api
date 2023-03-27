@@ -1,4 +1,4 @@
-package akoletter.devakoletterapi.common.auth.domain.response;
+package akoletter.devakoletterapi.common.member.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

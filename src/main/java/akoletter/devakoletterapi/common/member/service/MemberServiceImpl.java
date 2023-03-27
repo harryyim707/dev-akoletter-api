@@ -1,7 +1,7 @@
-package akoletter.devakoletterapi.common.auth.service;
+package akoletter.devakoletterapi.common.member.service;
 
-import akoletter.devakoletterapi.common.auth.domain.request.SignUpRequest;
-import akoletter.devakoletterapi.common.auth.domain.response.SignUpResponse;
+import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
+import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
 import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
 import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class AuthServiceImpl implements AuthService {
+public class MemberServiceImpl implements MemberService {
   private final MemberMstRepository memberMstRepository;
   private final PasswordEncoder passwordEncoder;
 
