@@ -3,6 +3,7 @@ package akoletter.devakoletterapi.util.jwt;
 import akoletter.devakoletterapi.jpa.authority.entity.Authority;
 import akoletter.devakoletterapi.util.security.JpaUserDetailsService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,6 +12,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +30,9 @@ public class JwtProvider {
 
   private Key secretKey;
 
-  // 만료시간 : 1Hour
-  private final long exp = 1000L * 60 * 60;
+  // access 토큰 만료시간 : 1Hour
+  private final long exp = Duration.ofHours(1).toMillis();
+//  private final long exp = 1000 * 60;
 
   private final JpaUserDetailsService userDetailsService;
   @PostConstruct
@@ -59,6 +62,15 @@ public class JwtProvider {
 
   // 토큰에 담겨있는 유저 account 획득
   public String getAccount(String token) {
+    // 만료된 토큰에 대해 parseClaimsJws를 수행하면 io.jsonwebtoken.ExpiredJwtException이 발생한다.
+    try {
+      Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+    } catch (ExpiredJwtException e) {
+      e.printStackTrace();
+      return e.getClaims().getSubject();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
   }
 

@@ -6,6 +6,7 @@ import akoletter.devakoletterapi.common.member.domain.response.LoginResponse;
 import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
 import akoletter.devakoletterapi.common.member.service.MemberService;
 import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
+import akoletter.devakoletterapi.util.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,8 @@ public class MemberController {
 
   @PostMapping(value = "/login")
   public ResponseEntity<LoginResponse> signin(@RequestBody LoginRequest request) throws Exception {
-    return new ResponseEntity<>(memberService.login(request), HttpStatus.OK);
+    LoginResponse loginResponse = memberService.login(request);
+    return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
   }
   @PostMapping(value = "/join")
   public ResponseEntity<SignUpResponse> signup(@RequestBody SignUpRequest request) throws Exception {
@@ -36,5 +38,9 @@ public class MemberController {
   @GetMapping("/user/get")
   public ResponseEntity<LoginResponse> getUser(@RequestParam String account) throws Exception {
     return new ResponseEntity<>( memberService.getMember(account), HttpStatus.OK);
+  }
+  @GetMapping("/refresh")
+  public ResponseEntity<TokenDto> refresh(@RequestBody TokenDto token) throws Exception {
+    return new ResponseEntity<>( memberService.refreshAccessToken(token), HttpStatus.OK);
   }
 }

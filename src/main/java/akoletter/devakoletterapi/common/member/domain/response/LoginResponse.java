@@ -2,6 +2,7 @@ package akoletter.devakoletterapi.common.member.domain.response;
 
 import akoletter.devakoletterapi.jpa.authority.entity.Authority;
 import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
+import akoletter.devakoletterapi.util.jwt.TokenDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class LoginResponse {
 
   private List<Authority> roles = new ArrayList<>();
 
-  private String token;
+  private TokenDto token;
 
   public LoginResponse(MemberMst member) {
     this.usrNm = member.getUsrNm();
