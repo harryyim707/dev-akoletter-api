@@ -1,5 +1,6 @@
-package akoletter.devakoletterapi.jpa.codemst.entity;
+package akoletter.devakoletterapi.jpa.authority.entity;
 
+import jakarta.persistence.Column;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CodeMstPk implements Serializable {
+public class AuthorityPk implements Serializable {
   private static final long serialVersionUID = -3707559740976324731L;
-  private Long cdGrp;
+  @Column(name = "auth_id")
+  private Long authId;
+
 }

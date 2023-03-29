@@ -1,5 +1,9 @@
 package akoletter.devakoletterapi.common.member.domain.request;
 
-public class LoginRequest {
+import lombok.Data;
 
+@Data
+public class LoginRequest {
+  private String usrId;
+  private String usrPwd;
 }

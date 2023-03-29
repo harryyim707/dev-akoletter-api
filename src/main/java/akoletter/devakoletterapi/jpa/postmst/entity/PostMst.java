@@ -32,9 +32,9 @@ public class PostMst {
 
   @Column(name = "fk_unq_usr_id")
   @Schema(description = "게시글 작성자 id")
-  private String unqUsrId;
+  private Long unqUsrId;
 
   @Column(name = "fk_file_id")
   @Schema(description = "첨부파일 id")
-  private String fileId;
+  private Long fileId;
 }

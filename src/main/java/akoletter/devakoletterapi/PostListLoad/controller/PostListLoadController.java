@@ -2,7 +2,6 @@ package akoletter.devakoletterapi.PostListLoad.controller;
 
 import akoletter.devakoletterapi.PostListLoad.domain.request.PostListLoadRequest;
 import akoletter.devakoletterapi.PostListLoad.domain.response.PostListLoadResponse;
-import akoletter.devakoletterapi.common.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

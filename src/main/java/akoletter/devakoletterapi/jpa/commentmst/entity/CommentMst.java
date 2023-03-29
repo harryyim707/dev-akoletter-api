@@ -28,9 +28,9 @@ public class CommentMst {
 
   @Column(name = "fk_post_id")
   @Schema(description = "게시글 ID")
-  private String postId;
+  private Long postId;
 
   @Column(name = "fk_unq_usr_id")
   @Schema(description = "댓글 작성자 ID")
-  private String unqUsrId;
+  private Long unqUsrId;
 }

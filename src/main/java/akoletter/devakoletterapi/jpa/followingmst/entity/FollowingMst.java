@@ -24,9 +24,9 @@ public class FollowingMst {
 
   @Column(name = "follow_usr_id")
   @Schema(description = "팔로우 하는 usr id")
-  private String followUsrId;
+  private Long followUsrId;
 
   @Column(name = "fk_unq_usr_id")
   @Schema(description = "팔로잉 하는 대상자, 즉 기준 ID")
-  private String unqUsrId;
+  private Long unqUsrId;
 }
