@@ -14,6 +14,7 @@ import akoletter.devakoletterapi.util.jwt.JwtProvider;
 import akoletter.devakoletterapi.util.jwt.TokenDto;
 import akoletter.devakoletterapi.util.response.Response;
 import jakarta.transaction.Transactional;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ public class MemberServiceImpl implements MemberService {
   private final JwtProvider jwtProvider;
   private final TokenRepository tokenRepository;
 
-//  private final Integer EXP = Math.toIntExact(Duration.ofDays(14).toMillis());
-  private final Integer EXP = 1000 * 60 * 2;
+  private final Integer EXP = Math.toIntExact(Duration.ofDays(14).toMillis());
+//  private final Integer EXP = 1000 * 60 * 2;
 
   @Override
   public ResponseEntity<?> login(LoginRequest request) {

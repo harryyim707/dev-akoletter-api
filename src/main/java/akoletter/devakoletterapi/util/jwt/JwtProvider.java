@@ -35,8 +35,8 @@ public class JwtProvider {
   private Key secretKey;
 
   // access 토큰 만료시간 : 1Hour
-//  private final long exp = Duration.ofHours(1).toMillis();
-  private final long exp = 1000L * 30;
+  private final long exp = Duration.ofHours(1).toMillis();
+//  private final long exp = 1000L * 30;
 
   private final JpaUserDetailsService userDetailsService;
 
