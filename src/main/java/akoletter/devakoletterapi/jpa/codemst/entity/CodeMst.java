@@ -20,7 +20,7 @@ public class CodeMst {
   @Id
   @Column(name = "cd_grp")
   @Schema(description = "코드 그룹")
-  private String cdGrp;
+  private Long cdGrp;
 
   @Column(name = "cd_grp_nm")
   @Schema(description = "코드 그룹 이름")

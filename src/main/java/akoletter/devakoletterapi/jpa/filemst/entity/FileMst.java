@@ -20,11 +20,11 @@ public class FileMst {
   @Id
   @Column(name = "file_id")
   @Schema(description = "파일 ID")
-  private String fileId;
+  private Long fileId;
 
   @Column(name = "file_seq_no")
   @Schema(description = "파일의 시퀀스 번호")
-  private String fileSeqNo;
+  private Long fileSeqNo;
 
   @Column(name = "ref_tbl")
   @Schema(description = "참조하는 테이블 이름")

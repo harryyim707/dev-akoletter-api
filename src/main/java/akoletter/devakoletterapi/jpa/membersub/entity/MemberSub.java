@@ -21,11 +21,11 @@ public class MemberSub {
   @Id
   @Column(name = "fk_unq_usr_id")
   @Schema(description = "사용자 고유 id")
-  private String unqUsrId;
+  private Long unqUsrId;
 
   @Column(name = "fk_file_id")
   @Schema(description = "프로필 사진 이미지 파일 id")
-  private String fileId;
+  private Long fileId;
 
   @Column(name = "intro_comment")
   @Schema(description = "자기 소개")

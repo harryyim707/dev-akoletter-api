@@ -25,7 +25,7 @@ public class LikeMst {
 
   @Column(name = "fk_unq_usr_id")
   @Schema(description = "좋아요 누른 사람의 id")
-  private String unqUsrId;
+  private Long unqUsrId;
 
   @Column(name = "fk_post_id")
   @Schema(description = "해당 게시글 id")

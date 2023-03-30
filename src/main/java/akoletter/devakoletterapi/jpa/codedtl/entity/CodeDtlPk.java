@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CodeDtlPk implements Serializable {
   private static final long serialVersionUID = -3707559740976324731L;
-  private String cdId;
-  private String cdGrp;
+  private Long cdId;
+  private Long cdGrp;
 }

@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FileMstPk implements Serializable {
   private static final long serialVersionUID = -3707559740976324731L;
-  private String fileId;
+  private Long fileId;
 }

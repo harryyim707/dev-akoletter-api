@@ -20,12 +20,12 @@ public class CodeDtl {
   @Id
   @Column(name = "cd_id")
   @Schema(description = "코드 ID")
-  private String cdId;
+  private Long cdId;
 
   @Id
   @Column(name = "fk_cd_grp")
   @Schema(description = "코드 그룹")
-  private String cdGrp;
+  private Long cdGrp;
 
   @Column(name = "cd_nm")
   @Schema(description = "코드 이름")
