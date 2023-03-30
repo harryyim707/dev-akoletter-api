@@ -1,13 +1,17 @@
 package akoletter.devakoletterapi.post.PostListLoad.controller;
 
+import akoletter.devakoletterapi.common.member.domain.request.LoginRequest;
 import akoletter.devakoletterapi.post.PostListLoad.domain.request.PostListLoadRequest;
 import akoletter.devakoletterapi.post.PostListLoad.domain.response.PostListLoadResponse;
 import akoletter.devakoletterapi.common.member.service.MemberService;
 import akoletter.devakoletterapi.post.PostListLoad.service.PostListLoadService;
+import akoletter.devakoletterapi.util.response.Helper;
+import akoletter.devakoletterapi.util.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +24,15 @@ import org.springframework.web.bind.annotation.*;
 public class PostListLoadController {
 
     private final PostListLoadService postListLoadService;
-    private final MemberService memberService;
+    private final Response response;
 
-    @GetMapping("/recent")
-    public ResponseEntity<PostListLoadResponse> postload(@RequestBody PostListLoadRequest request) throws Exception {
-        return new ResponseEntity<>(postListLoadService.postload(request), HttpStatus.OK);
+    @GetMapping("/gridpostload")
+    public ResponseEntity<?> postload(@RequestBody PostListLoadRequest request, Errors errors) {
+        if(errors.hasErrors()){
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return postListLoadService.postload(request);
     }
-
 
 }
 
