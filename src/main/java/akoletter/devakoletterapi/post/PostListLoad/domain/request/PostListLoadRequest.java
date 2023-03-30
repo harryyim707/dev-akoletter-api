@@ -1,4 +1,4 @@
-package akoletter.devakoletterapi.PostListLoad.domain.request;
+package akoletter.devakoletterapi.post.PostListLoad.domain.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
