@@ -1,20 +1,19 @@
 package akoletter.devakoletterapi.common.member.controller;
 
 import akoletter.devakoletterapi.common.member.domain.request.LoginRequest;
+import akoletter.devakoletterapi.common.member.domain.request.LogoutRequest;
 import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
-import akoletter.devakoletterapi.common.member.domain.response.LoginResponse;
-import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
 import akoletter.devakoletterapi.common.member.service.MemberService;
-import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
 import akoletter.devakoletterapi.util.jwt.TokenDto;
+import akoletter.devakoletterapi.util.response.Helper;
+import akoletter.devakoletterapi.util.response.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,25 +21,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberController {
   private final MemberService memberService;
-  private final MemberMstRepository memberMstRepository;
+
+  private final Response response;
 
 
   @PostMapping(value = "/login")
-  public ResponseEntity<LoginResponse> signin(@RequestBody LoginRequest request) throws Exception {
-    LoginResponse loginResponse = memberService.login(request);
-    return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+  public ResponseEntity<?> login(@RequestBody LoginRequest request, Errors errors) {
+    if(errors.hasErrors()){
+      return response.invalidFields(Helper.refineErrors(errors));
+    }
+    return memberService.login(request);
   }
   @PostMapping(value = "/join")
-  public ResponseEntity<SignUpResponse> signup(@RequestBody SignUpRequest request) throws Exception {
-    return new ResponseEntity<>(memberService.signUp(request), HttpStatus.OK);
+  public ResponseEntity<?> signup(@RequestBody SignUpRequest request, Errors errors) {
+    if(errors.hasErrors()){
+      return response.invalidFields(Helper.refineErrors(errors));
+    }
+    return memberService.signUp(request);
   }
 
-  @GetMapping("/user/get")
-  public ResponseEntity<LoginResponse> getUser(@RequestParam String account) throws Exception {
-    return new ResponseEntity<>( memberService.getMember(account), HttpStatus.OK);
+  @GetMapping("/reissue")
+  public ResponseEntity<?> refresh(@RequestBody TokenDto token, Errors errors) {
+    if(errors.hasErrors()){
+      return response.invalidFields(Helper.refineErrors(errors));
+    }
+    return memberService.refreshAccessToken(token);
   }
-  @GetMapping("/refresh")
-  public ResponseEntity<TokenDto> refresh(@RequestBody TokenDto token) throws Exception {
-    return new ResponseEntity<>( memberService.refreshAccessToken(token), HttpStatus.OK);
+
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout(@RequestBody LogoutRequest request, Errors errors){
+    if(errors.hasErrors()){
+      return response.invalidFields(Helper.refineErrors(errors));
+    }
+    return memberService.logout(request);
   }
 }

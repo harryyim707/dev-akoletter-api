@@ -8,4 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberMstRepository extends JpaRepository<MemberMst, MemberMstPk> {
 
   Optional<MemberMst> findByUsrId(String usrId);
+
+  Optional<MemberMst> findByUsrEmail(String usrEmail);
+
+  Optional<MemberMst> findByUsrTelNo(String usrTelNo);
 }
