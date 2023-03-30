@@ -18,7 +18,7 @@ public class Token {
   @JsonIgnore
   private Long id;
 
-  private String refresh_token;
+  private String refreshToken;
 
   @TimeToLive(unit = TimeUnit.MILLISECONDS)
   private Integer expiration;
