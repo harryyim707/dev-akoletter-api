@@ -24,6 +24,9 @@ public class PostListLoadServiceImpl implements PostListLoadService{
         PostMst post = new PostMst();
         LocalDateTime now = LocalDateTime.now();
         List<PostListLoadResponse> resultList = new ArrayList<>();
+        //LocalDateTime now = LocalDateTime.now();
+        //        List<PostListLoadResponse> resultList = postMstRepository.findByPostId(request.getPostNm());
+        //
         return resultList;
     }
 
