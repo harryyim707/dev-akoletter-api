@@ -6,6 +6,7 @@ import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
 import akoletter.devakoletterapi.common.member.domain.response.LoginResponse;
 import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
 import akoletter.devakoletterapi.jpa.authority.entity.Authority;
+import akoletter.devakoletterapi.jpa.authority.repo.AuthorityRepository;
 import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
 import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
 import akoletter.devakoletterapi.jpa.token.entity.Token;
@@ -15,7 +16,9 @@ import akoletter.devakoletterapi.util.jwt.TokenDto;
 import akoletter.devakoletterapi.util.response.Response;
 import jakarta.transaction.Transactional;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,7 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
   private final Response response;
   private final MemberMstRepository memberMstRepository;
+  private final AuthorityRepository authorityRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtProvider jwtProvider;
   private final TokenRepository tokenRepository;
@@ -42,6 +46,9 @@ public class MemberServiceImpl implements MemberService {
     if(memberMst==null){
       return response.fail("계정 정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
+    if("N".equals(memberMst.getUseYn())){
+      return response.fail("탈퇴한 사용자입니다.", HttpStatus.BAD_REQUEST);
+    }
     if (!passwordEncoder.matches(request.getUsrPwd(), memberMst.getUsrPwd())){
       return response.fail("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
@@ -52,12 +59,13 @@ public class MemberServiceImpl implements MemberService {
       memberMst.setRefreshToken(refreshToken.getRefreshToken());
     }
     memberMstRepository.save(memberMst);
+    List<Authority> roles = authorityRepository.findAllByUsrId(memberMst.getUsrId());
     LoginResponse loginResponse = LoginResponse.builder()
         .usrId(memberMst.getUsrId())
         .usrNm(memberMst.getUsrNm())
         .usrEmail(memberMst.getUsrEmail())
         .usrTelNo(memberMst.getUsrTelNo())
-        .roles(memberMst.getRoles())
+        .roles(roles)
         .token(TokenDto.builder()
             .access_token(accessToken)
             .refresh_token(refreshToken.getRefreshToken())
@@ -75,15 +83,21 @@ public class MemberServiceImpl implements MemberService {
     if(memberCheck != null || memberMstRepository.findByUsrEmail(request.getUsrEmail()).orElse(null) != null || memberMstRepository.findByUsrTelNo(request.getUsrTelNo()).orElse(null) != null){
       return response.fail("이미 존재하는 계정 정보입니다.", HttpStatus.BAD_REQUEST);
     }
-    MemberMst memberMst = MemberMst.builder()
-        .usrId(request.getUsrId())
-        .usrPwd(passwordEncoder.encode(request.getUsrPwd()))
-        .usrNm(request.getUsrNm())
-        .usrEmail(request.getUsrEmail())
-        .usrTelNo(request.getUsrTelNo())
-        .build();
-    memberMst.setRoles(Collections.singletonList(Authority.builder().member(memberMst).name("ROLE_USER").build()));
+    MemberMst memberMst = new MemberMst();
+    memberMst.setUsrId(request.getUsrId());
+    memberMst.setUsrPwd(passwordEncoder.encode(request.getUsrPwd()));
+    memberMst.setUsrNm(request.getUsrNm());
+    memberMst.setUsrEmail(request.getUsrEmail());
+    memberMst.setUsrTelNo(request.getUsrTelNo());
+    List<Authority> authorities = new ArrayList<>();
+    Authority authority = new Authority();
+    authority.setName("ROLE_USER");
+    authority.setMember(memberMst);
+    authority.setUsrId(request.getUsrId());
+    authorities.add(authority);
+    memberMst.setRoles(authorities);
     memberMstRepository.saveAndFlush(memberMst);
+    authorityRepository.saveAllAndFlush(authorities);
     result.setSuccess("true");
     return response.success(result, "회원가입에 성공했습니다.", HttpStatus.OK);
   }

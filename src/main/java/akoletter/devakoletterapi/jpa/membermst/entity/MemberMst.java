@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor @AllArgsConstructor @Builder
+@NoArgsConstructor @AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -49,7 +49,6 @@ public class MemberMst extends BaseEntity {
     private String refreshToken;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Builder.Default
     private List<Authority> roles = new ArrayList<>();
 
     public void setRoles(List<Authority> role) {

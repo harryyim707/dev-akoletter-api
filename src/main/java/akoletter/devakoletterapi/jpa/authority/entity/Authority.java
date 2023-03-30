@@ -14,14 +14,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@AllArgsConstructor @NoArgsConstructor @Builder
+@Data
+@AllArgsConstructor @NoArgsConstructor
 @Table(name = "authority")
 @EqualsAndHashCode(callSuper = false)
 @IdClass(AuthorityPk.class)
@@ -33,10 +32,14 @@ public class Authority extends BaseEntity {
   @Column(name = "auth_id")
   private Long authId;
 
+  @Column(name = "name")
   private String name;
 
-  @JoinColumn(name = "unq_usr_id")
-  @ManyToOne(fetch = FetchType.LAZY)
+  @Column(name = "usr_id")
+  private String usrId;
+
+  @JoinColumn(name = "unq_usr_id", nullable = false)
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JsonIgnore
   private MemberMst member;
 
