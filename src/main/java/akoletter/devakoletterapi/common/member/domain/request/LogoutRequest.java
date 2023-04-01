@@ -7,6 +7,4 @@ public class LogoutRequest {
 
   private String accessToken;
 
-  private String refreshToken;
-
 }

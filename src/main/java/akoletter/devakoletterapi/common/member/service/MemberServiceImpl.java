@@ -1,8 +1,10 @@
 package akoletter.devakoletterapi.common.member.service;
 
+import akoletter.devakoletterapi.common.member.domain.request.DeleteAccountRequest;
 import akoletter.devakoletterapi.common.member.domain.request.LoginRequest;
 import akoletter.devakoletterapi.common.member.domain.request.LogoutRequest;
 import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
+import akoletter.devakoletterapi.common.member.domain.request.TestRequest;
 import akoletter.devakoletterapi.common.member.domain.response.LoginResponse;
 import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
 import akoletter.devakoletterapi.jpa.authority.entity.Authority;
@@ -160,13 +162,24 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  public ResponseEntity<?> delete(DeleteAccountRequest request) {
+
+    return null;
+  }
+
+  @Override
+  public ResponseEntity<?> test(TestRequest request) {
+    return response.success(request.getRequestId());
+  }
+
+  @Override
   public ResponseEntity<?> logout(LogoutRequest request) {
     String usrId = jwtProvider.getAccount(request.getAccessToken());
     MemberMst memberMst = memberMstRepository.findByUsrId(usrId).orElse(null);
     // access token이 유효한지 확인
-    if(!jwtProvider.validateToken(request.getAccessToken()) || usrId == null){
-      return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
-    }
+//    if(!jwtProvider.validateToken(request.getAccessToken()) || usrId == null){
+//      return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
+//    }
     // refresh token 존재 여부 확인
     Token refresh = tokenRepository.findById(memberMst.getUnqUsrId()).orElse(null);
     if(refresh == null){

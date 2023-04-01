@@ -1,15 +1,19 @@
 package akoletter.devakoletterapi.common.member.controller;
 
+import akoletter.devakoletterapi.common.member.domain.request.DeleteAccountRequest;
 import akoletter.devakoletterapi.common.member.domain.request.LoginRequest;
 import akoletter.devakoletterapi.common.member.domain.request.LogoutRequest;
 import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
+import akoletter.devakoletterapi.common.member.domain.request.TestRequest;
 import akoletter.devakoletterapi.common.member.service.MemberService;
 import akoletter.devakoletterapi.util.jwt.TokenDto;
 import akoletter.devakoletterapi.util.response.Helper;
 import akoletter.devakoletterapi.util.response.Response;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +44,7 @@ public class MemberController {
     return memberService.signUp(request);
   }
 
-  @GetMapping("/reissue")
+  @PostMapping("/reissue")
   public ResponseEntity<?> refresh(@RequestBody TokenDto token, Errors errors) {
     if(errors.hasErrors()){
       return response.invalidFields(Helper.refineErrors(errors));
@@ -54,5 +58,21 @@ public class MemberController {
       return response.invalidFields(Helper.refineErrors(errors));
     }
     return memberService.logout(request);
+  }
+
+  @DeleteMapping("/delete")
+  public ResponseEntity<?> delete(@RequestBody DeleteAccountRequest request, Errors errors){
+    if(errors.hasErrors()){
+      return response.invalidFields(Helper.refineErrors(errors));
+    }
+    return memberService.delete(request);
+  }
+
+  @PostMapping("/test")
+  public ResponseEntity< ? > test(@Valid @RequestBody TestRequest request, Errors errors){
+    if(errors.hasErrors()){
+      return response.invalidFields(Helper.refineErrors(errors));
+    }
+    return memberService.test(request);
   }
 }
