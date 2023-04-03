@@ -48,16 +48,24 @@ public class JwtProvider {
   }
 
   // 토큰 생성
-  public String createAccessToken(String account, List<Authority> roles) {
+  public TokenDto createAccessToken(String account, List<Authority> roles) {
     Claims claims = Jwts.claims().setSubject(account);
     claims.put("roles", roles);
     Date now = new Date();
-    return Jwts.builder()
+    Date accessTokenExpiration = new Date(now.getTime() + exp);
+    String accessToken = Jwts.builder()
         .setClaims(claims)
         .setIssuedAt(now)
-        .setExpiration(new Date(now.getTime() + exp))
+        .setExpiration(accessTokenExpiration)
         .signWith(secretKey, SignatureAlgorithm.HS256)
         .compact();
+    Long accessTokenExpirationTime = accessTokenExpiration.getTime();
+    return TokenDto.builder()
+        .accessToken(accessToken)
+        .accessTokenExpirationTime(accessTokenExpirationTime)
+        .refreshToken(null)
+        .refreshTokenExpirationTime(null)
+        .build();
   }
 
 
@@ -91,12 +99,6 @@ public class JwtProvider {
   // 토큰 검증
   public boolean validateToken(String token) {
     try {
-      // Bearer 검증
-      if (!token.substring(0, "BEARER ".length()).equalsIgnoreCase("BEARER ")) {
-        return false;
-      } else {
-        token = token.split(" ")[1].trim();
-      }
       Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
       // 만료되었을 시 false
       return !claims.getBody().getExpiration().before(new Date());
@@ -122,5 +124,12 @@ public class JwtProvider {
     Token refreshToken = tokenRepository.findById(memberMst.getUnqUsrId()).orElse(null);
     // Redis에 refresh token이 없다면 로그아웃된 상태, refresh token의 만료시간이 0이하면 재로그인 필요
     return refreshToken == null || refreshToken.getExpiration() <= 0;
+  }
+
+  public Long getExpiration(String accessToken) {
+    Date expiration = Jwts.parserBuilder().setSigningKey(secretKey)
+        .build().parseClaimsJws(accessToken).getBody().getExpiration();
+    Long now  = new Date().getTime();
+    return (expiration.getTime() - now);
   }
 }

@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class TokenDto {
-  private String access_token;
-  private String refresh_token;
+  private String accessToken;
+  private String refreshToken;
 
-  private Integer expiration_ms;
+  private Long accessTokenExpirationTime;
+
+  private Integer refreshTokenExpirationTime;
 }

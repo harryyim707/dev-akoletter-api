@@ -21,7 +21,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +39,8 @@ public class MemberServiceImpl implements MemberService {
   private final PasswordEncoder passwordEncoder;
   private final JwtProvider jwtProvider;
   private final TokenRepository tokenRepository;
+
+  private final RedisTemplate<String, String> redisTemplate;
 
   private final Integer EXP = Math.toIntExact(Duration.ofDays(14).toMillis());
 //  private final Integer EXP = 1000 * 60 * 2;
@@ -54,7 +58,7 @@ public class MemberServiceImpl implements MemberService {
     if (!passwordEncoder.matches(request.getUsrPwd(), memberMst.getUsrPwd())){
       return response.fail("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
-    String accessToken = jwtProvider.createAccessToken(memberMst.getUsrId(), memberMst.getRoles());
+    TokenDto tokenDto = jwtProvider.createAccessToken(memberMst.getUsrId(), memberMst.getRoles());
     Token refreshToken = validRefreshToken(memberMst, memberMst.getRefreshToken());
     if(refreshToken == null || refreshToken.getExpiration() <= 0){
       refreshToken = createRefreshToken(memberMst);
@@ -62,17 +66,15 @@ public class MemberServiceImpl implements MemberService {
     }
     memberMstRepository.save(memberMst);
 //    List<Authority> roles = authorityRepository.findAllByMember(memberMst.getUnqUsrId());
+    tokenDto.setRefreshToken(refreshToken.getRefreshToken());
+    tokenDto.setRefreshTokenExpirationTime(refreshToken.getExpiration());
     LoginResponse loginResponse = LoginResponse.builder()
         .usrId(memberMst.getUsrId())
         .usrNm(memberMst.getUsrNm())
         .usrEmail(memberMst.getUsrEmail())
         .usrTelNo(memberMst.getUsrTelNo())
         .roles(memberMst.getRoles())
-        .token(TokenDto.builder()
-            .access_token(accessToken)
-            .refresh_token(refreshToken.getRefreshToken())
-            .expiration_ms(refreshToken.getExpiration())
-            .build())
+        .token(tokenDto)
         .build();
     return response.success(loginResponse, "로그인에 성공했습니다.", HttpStatus.OK);
   }
@@ -151,27 +153,40 @@ public class MemberServiceImpl implements MemberService {
   }
   @Override
   public ResponseEntity<?> refreshAccessToken(TokenDto token) {
-    String usrId = jwtProvider.getAccount(token.getAccess_token());
+    String usrId = jwtProvider.getAccount(token.getAccessToken());
     MemberMst memberMst = memberMstRepository.findByUsrId(usrId).orElse(null);
     if(memberMst == null){
       return response.fail("회원정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
-    Token refreshToken = validRefreshToken(memberMst, token.getRefresh_token());
-    if (refreshToken == null) {
+    Token refreshToken = validRefreshToken(memberMst, token.getRefreshToken());
+    if (refreshToken == null || !memberMst.getRefreshToken().equals(refreshToken.getRefreshToken())) {
       return response.fail("다시 로그인해 주세요.", HttpStatus.BAD_REQUEST);
     }
-    String accessToken = jwtProvider.createAccessToken(usrId, memberMst.getRoles());
-    TokenDto tokenDto = TokenDto.builder()
-        .access_token(accessToken)
-        .refresh_token(memberMst.getRefreshToken())
-        .build();
+    TokenDto tokenDto = jwtProvider.createAccessToken(usrId, memberMst.getRoles());
+    tokenDto.setRefreshToken(refreshToken.getRefreshToken());
+    tokenDto.setRefreshTokenExpirationTime(refreshToken.getExpiration());
     return response.success(tokenDto, "", HttpStatus.OK);
   }
 
   @Override
   public ResponseEntity<?> delete(DeleteAccountRequest request) {
-
-    return null;
+    String usrId = jwtProvider.getAccount(request.getAccessToken());
+    if(usrId == null){
+      return response.fail("다시 로그인해 주십시오.", HttpStatus.BAD_REQUEST);
+    }
+    MemberMst memberMst = memberMstRepository.findByUsrId(usrId).orElse(null);
+    if (memberMst == null) {
+      return response.fail("회원정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+    memberMst.setUseYn("N");
+    List<Authority> authorities = memberMst.getRoles();
+    for(Authority authority: authorities){
+      authority.setUseYn("N");
+      authority.setName("DELETED");
+    }
+    memberMst.setRoles(authorities);
+    memberMstRepository.save(memberMst);
+    return response.success("회원 탈퇴가 완료되었습니다.");
   }
 
   @Override
@@ -185,9 +200,9 @@ public class MemberServiceImpl implements MemberService {
     String usrId = jwtProvider.getAccount(request.getAccessToken());
     MemberMst memberMst = memberMstRepository.findByUsrId(usrId).orElse(null);
     // access token이 유효한지 확인
-//    if(!jwtProvider.validateToken(request.getAccessToken()) || usrId == null){
-//      return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
-//    }
+    if(!jwtProvider.validateToken(request.getAccessToken()) || usrId == null){
+      return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
+    }
     // refresh token 존재 여부 확인
     Token refresh = tokenRepository.findById(memberMst.getUnqUsrId()).orElse(null);
     if(refresh == null){
@@ -200,6 +215,8 @@ public class MemberServiceImpl implements MemberService {
      * 2. access token이 유효하지 않지만, refresh token이 유효하다면, access token 재발급
      */
     tokenRepository.delete(refresh);
+    Long expiration = jwtProvider.getExpiration(request.getAccessToken());
+    redisTemplate.opsForValue().set(request.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
     return response.success("로그아웃 되었습니다.");
   }
 

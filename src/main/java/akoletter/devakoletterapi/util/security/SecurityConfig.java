@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,11 +26,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
   private final JwtProvider jwtProvider;
-
+  private final RedisTemplate<String, String> redisTemplate;
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
@@ -57,7 +58,7 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         // 조건별로 요청 허용/제한 설정
-        .authorizeRequests()
+        .authorizeHttpRequests()
         // 회원가입과 로그인은 모두 승인
         .requestMatchers("/member/join", "/member/login", "/member/reissue").permitAll()
         .requestMatchers("/**").permitAll()
@@ -68,7 +69,7 @@ public class SecurityConfig {
         .anyRequest().authenticated()
         .and()
         // JWT 인증 필터 적용
-        .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
         // 에러 핸들링
         .exceptionHandling()
         .accessDeniedHandler(new AccessDeniedHandler() {

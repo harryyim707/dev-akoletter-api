@@ -1,6 +1,9 @@
 package akoletter.devakoletterapi.common.member.domain.request;
 
-public class DeleteAccountRequest {
+import lombok.Data;
 
+@Data
+public class DeleteAccountRequest {
+  private String accessToken;
 
 }
