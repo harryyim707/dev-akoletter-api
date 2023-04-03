@@ -1,6 +1,11 @@
 package akoletter.devakoletterapi.util.base;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,7 +19,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public class BaseEntity implements Serializable {
   @Column(name = "seq_no")
   private long seqNo = 1;
 
@@ -24,12 +29,16 @@ public class BaseEntity {
   @Column(updatable = false, name = "frst_rgst_id")
   private String frstRgstId;
   @CreationTimestamp
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   @Column(updatable = false, name = "frst_rgst_dt")
   private LocalDateTime frstRgstDt;
   @LastModifiedBy
   @Column(name = "last_mdfy_id")
   private String lastMdfyId;
   @UpdateTimestamp
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   @Column(name = "last_mdfy_dt")
   private LocalDateTime lastMdfyDt;
 

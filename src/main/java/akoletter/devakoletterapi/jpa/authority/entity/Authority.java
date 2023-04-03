@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -24,6 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "authority")
 @EqualsAndHashCode(callSuper = false)
 @IdClass(AuthorityPk.class)
+@ToString(exclude = "member")
 public class Authority extends BaseEntity {
 
   @Id
@@ -34,9 +36,6 @@ public class Authority extends BaseEntity {
 
   @Column(name = "name")
   private String name;
-
-  @Column(name = "usr_id")
-  private String usrId;
 
   @JoinColumn(name = "unq_usr_id", nullable = false)
   @ManyToOne(fetch = FetchType.EAGER, optional = false)

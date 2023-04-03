@@ -19,7 +19,6 @@ import akoletter.devakoletterapi.util.response.Response;
 import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,7 @@ public class MemberServiceImpl implements MemberService {
 //  private final Integer EXP = 1000 * 60 * 2;
 
   @Override
+  @Transactional
   public ResponseEntity<?> login(LoginRequest request) {
     MemberMst memberMst = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
     if(memberMst==null){
@@ -61,13 +61,13 @@ public class MemberServiceImpl implements MemberService {
       memberMst.setRefreshToken(refreshToken.getRefreshToken());
     }
     memberMstRepository.save(memberMst);
-    List<Authority> roles = authorityRepository.findAllByUsrId(memberMst.getUsrId());
+//    List<Authority> roles = authorityRepository.findAllByMember(memberMst.getUnqUsrId());
     LoginResponse loginResponse = LoginResponse.builder()
         .usrId(memberMst.getUsrId())
         .usrNm(memberMst.getUsrNm())
         .usrEmail(memberMst.getUsrEmail())
         .usrTelNo(memberMst.getUsrTelNo())
-        .roles(roles)
+        .roles(memberMst.getRoles())
         .token(TokenDto.builder()
             .access_token(accessToken)
             .refresh_token(refreshToken.getRefreshToken())
@@ -79,11 +79,10 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   @Transactional
-  public ResponseEntity<?> signUp(SignUpRequest request){
+  public MemberMst signUp(SignUpRequest request){
     MemberMst memberCheck = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
-    SignUpResponse result = new SignUpResponse();
     if(memberCheck != null || memberMstRepository.findByUsrEmail(request.getUsrEmail()).orElse(null) != null || memberMstRepository.findByUsrTelNo(request.getUsrTelNo()).orElse(null) != null){
-      return response.fail("이미 존재하는 계정 정보입니다.", HttpStatus.BAD_REQUEST);
+      return null;
     }
     MemberMst memberMst = new MemberMst();
     memberMst.setUsrId(request.getUsrId());
@@ -91,18 +90,26 @@ public class MemberServiceImpl implements MemberService {
     memberMst.setUsrNm(request.getUsrNm());
     memberMst.setUsrEmail(request.getUsrEmail());
     memberMst.setUsrTelNo(request.getUsrTelNo());
-    List<Authority> authorities = new ArrayList<>();
-    Authority authority = new Authority();
-    authority.setName("ROLE_USER");
-    authority.setMember(memberMst);
-    authority.setUsrId(request.getUsrId());
-    authorities.add(authority);
-    memberMst.setRoles(authorities);
     memberMstRepository.saveAndFlush(memberMst);
-    authorityRepository.saveAllAndFlush(authorities);
-    result.setSuccess("true");
-    return response.success(result, "회원가입에 성공했습니다.", HttpStatus.OK);
+    return memberMst;
   }
+  @Override
+  public ResponseEntity<?> authorityInsert(SignUpRequest request) {
+    Authority authority = new Authority();
+    MemberMst member = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
+    authority.setName("ROLE_USER");
+    authority.setMember(member);
+    List<Authority> authorities = new ArrayList<>();
+    authorities.add(authority);
+    authorityRepository.saveAllAndFlush(authorities);
+    member.setRoles(authorities);
+    memberMstRepository.save(member);
+    SignUpResponse results = new SignUpResponse();
+    results.setSuccess("true");
+    return response.success(results, "회원가입이 완료되었습니다.", HttpStatus.OK);
+  }
+
+
 
   // Refresh Token
 
@@ -171,6 +178,7 @@ public class MemberServiceImpl implements MemberService {
   public ResponseEntity<?> test(TestRequest request) {
     return response.success(request.getRequestId());
   }
+
 
   @Override
   public ResponseEntity<?> logout(LogoutRequest request) {

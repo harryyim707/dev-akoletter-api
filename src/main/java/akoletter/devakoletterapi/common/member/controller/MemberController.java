@@ -6,11 +6,16 @@ import akoletter.devakoletterapi.common.member.domain.request.LogoutRequest;
 import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
 import akoletter.devakoletterapi.common.member.domain.request.TestRequest;
 import akoletter.devakoletterapi.common.member.service.MemberService;
+import akoletter.devakoletterapi.jpa.authority.entity.Authority;
+import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
 import akoletter.devakoletterapi.util.jwt.TokenDto;
 import akoletter.devakoletterapi.util.response.Helper;
 import akoletter.devakoletterapi.util.response.Response;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +46,11 @@ public class MemberController {
     if(errors.hasErrors()){
       return response.invalidFields(Helper.refineErrors(errors));
     }
-    return memberService.signUp(request);
+    MemberMst member = memberService.signUp(request);
+    if(member == null){
+      return response.fail("이미 존재하는 계정 정보입니다.", HttpStatus.BAD_REQUEST);
+    }
+    return memberService.authorityInsert(request);
   }
 
   @PostMapping("/reissue")

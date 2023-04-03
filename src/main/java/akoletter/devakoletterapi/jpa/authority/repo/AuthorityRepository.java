@@ -6,5 +6,5 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AuthorityRepository extends JpaRepository<Authority, AuthorityPk> {
-  List<Authority> findAllByUsrId(String usrId);
+//  List<Authority> findAllByMember(Long unqUsrId);
 }
