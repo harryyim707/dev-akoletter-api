@@ -60,11 +60,12 @@ public class SecurityConfig {
         .authorizeRequests()
         // 회원가입과 로그인은 모두 승인
         .requestMatchers("/member/join", "/member/login", "/member/reissue").permitAll()
+        .requestMatchers("/**").permitAll()
         // /admin으로 시작하는 요청은 ADMIN 권한이 있는 유저에게만 허용
         .requestMatchers("/member/admin/**").hasRole("ADMIN")
         // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
         .requestMatchers("/member/user/**").hasRole("USER")
-        .anyRequest().denyAll()
+        .anyRequest().authenticated()
         .and()
         // JWT 인증 필터 적용
         .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
