@@ -4,7 +4,6 @@ import akoletter.devakoletterapi.editor.domain.request.SummaryRequest;
 import akoletter.devakoletterapi.editor.service.EditorService;
 import akoletter.devakoletterapi.util.response.Helper;
 import akoletter.devakoletterapi.util.response.Response;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;

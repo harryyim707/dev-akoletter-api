@@ -5,7 +5,6 @@ import akoletter.devakoletterapi.editor.domain.request.OptionObject;
 import akoletter.devakoletterapi.editor.domain.request.SummaryRequest;
 import akoletter.devakoletterapi.editor.domain.response.SummaryResponse;
 import akoletter.devakoletterapi.util.response.Response;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.net.URI;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +16,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
