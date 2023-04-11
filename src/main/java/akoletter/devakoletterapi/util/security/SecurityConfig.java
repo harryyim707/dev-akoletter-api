@@ -26,7 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
   private final JwtProvider jwtProvider;
