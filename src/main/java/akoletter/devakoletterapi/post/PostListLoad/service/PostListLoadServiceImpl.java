@@ -15,26 +15,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class PostListLoadServiceImpl implements PostListLoadService{
     private final Response response;
     private final PostMstRepository postMstRepository;
+
     private final PostMstRepositoryForQueryDsl postMstRepositoryForQueryDsl;
 
     @Override
-    public ResponseEntity<?> postload(PostListLoadRequest request) {
-       // PostMst postMst = postMstRepository.findTop10ByOrderByfrstRgstDt();
-        PostMst postMst = postMstRepository.findTop10By();
-        PostListLoadResponse postListLoadResponse = PostListLoadResponse.builder()
-        .postId(postMst.getPostId())
-                .postTitle(postMst.getPostTitle())
-                .unqUsrId(postMst.getUnqUsrId())
-                .fileId(postMst.getFileId())
-                .postContent(postMst.getPostContent())
-                .build();
-
-        return response.success(postListLoadResponse, "게시글을 불러오기 성공.", HttpStatus.OK);
+    public ResponseEntity<List<PostListLoadResponse>> postload(PostListLoadRequest request) {
+            List<PostMst> postMst = postMstRepository.findTop10By();
+        return (ResponseEntity<List<PostListLoadResponse>>) response.success(postMst, "게시글을 불러오기 성공.", HttpStatus.OK);
     }
 
 }

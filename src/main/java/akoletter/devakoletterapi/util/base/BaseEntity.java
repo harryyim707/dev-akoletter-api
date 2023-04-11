@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
   @Column(name = "seq_no")
-  private long seqNo = 1;
+  private Integer seqNo = 1;
 
   @Column(name = "use_yn")
   private String useYn = "Y";
@@ -45,7 +45,7 @@ public class BaseEntity implements Serializable {
   public BaseEntity() {
   }
 
-  public BaseEntity(long seqNo, String frstRgstId,
+  public BaseEntity(Integer seqNo, String frstRgstId,
                     LocalDateTime frstRgstDt, String lastMdfyId,
                     LocalDateTime lastMdfyDt) {
     this.seqNo = seqNo;

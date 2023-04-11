@@ -4,8 +4,10 @@ import akoletter.devakoletterapi.post.PostListLoad.domain.request.PostListLoadRe
 import akoletter.devakoletterapi.post.PostListLoad.domain.response.PostListLoadResponse;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface PostListLoadService {
 
-  ResponseEntity<?> postload(PostListLoadRequest request);
+  ResponseEntity<List<PostListLoadResponse>> postload(PostListLoadRequest request);
 
 }

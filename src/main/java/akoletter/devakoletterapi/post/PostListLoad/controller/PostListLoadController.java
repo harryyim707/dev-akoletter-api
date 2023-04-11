@@ -15,21 +15,24 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/postlist")
 @Tag(name = "post list", description = "게시글 불러오기 콘트롤러")
 @Validated
+
 public class PostListLoadController {
 
     private final PostListLoadService postListLoadService;
     private final Response response;
 
     @GetMapping("/gridpostload")
-    public ResponseEntity<?> postload(@RequestBody PostListLoadRequest request, Errors errors) {
+    public ResponseEntity<List<PostListLoadResponse>> postload(@RequestBody PostListLoadRequest request, Errors errors) {
         if(errors.hasErrors()){
-            return response.invalidFields(Helper.refineErrors(errors));
+            return (ResponseEntity<List<PostListLoadResponse>>) response.invalidFields(Helper.refineErrors(errors));
         }
         return postListLoadService.postload(request);
     }

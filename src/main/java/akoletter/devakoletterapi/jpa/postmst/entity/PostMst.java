@@ -1,5 +1,6 @@
 package akoletter.devakoletterapi.jpa.postmst.entity;
 
+import akoletter.devakoletterapi.util.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "post_mst")
 @IdClass(PostMstPk.class)
-public class PostMst {
+public class PostMst extends BaseEntity {
   @Id
   @Column(name = "post_id")
   @Schema(description = "게시글 id")
