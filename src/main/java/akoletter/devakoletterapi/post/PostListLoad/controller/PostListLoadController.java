@@ -20,7 +20,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/postlist")
+@RequestMapping("/post")
 @Tag(name = "post list", description = "게시글 불러오기 콘트롤러")
 @Validated
 
@@ -29,7 +29,7 @@ public class PostListLoadController {
     private final PostListLoadService postListLoadService;
     private final Response response;
 
-    @GetMapping("/gridpostload")
+    @GetMapping("/postlist")
     public ResponseEntity<List<PostListLoadResponse>> postload(@RequestBody PostListLoadRequest request, Errors errors) {
         if(errors.hasErrors()){
             return (ResponseEntity<List<PostListLoadResponse>>) response.invalidFields(Helper.refineErrors(errors));
