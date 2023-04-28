@@ -5,7 +5,7 @@ import akoletter.devakoletterapi.editor.service.EditorService;
 import akoletter.devakoletterapi.util.response.Helper;
 import akoletter.devakoletterapi.util.response.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
