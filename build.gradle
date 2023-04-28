@@ -67,8 +67,8 @@ dependencies {
 }
 bootJar{
 	destinationDirectory = file("./target")
-	archivesBaseName = 'dev_akoletter_api'
-	archiveFileName = 'dev_akoletter_api.jar'
+	archivesBaseName = 'devAkoletterApi'
+	archiveFileName = 'devAkoletterApi.jar'
 	archiveVersion = "0.0.1"
 }
 
