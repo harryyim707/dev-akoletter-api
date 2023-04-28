@@ -64,6 +64,12 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 }
+bootJar{
+	destinationDirectory = file("./build")
+	archivesBaseName = 'dev_akoletter_api'
+	archiveFileName = 'dev_akoletter_api.jar'
+	archiveVersion = "0.0.1"
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
