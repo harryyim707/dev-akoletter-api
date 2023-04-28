@@ -28,7 +28,7 @@ public class PostListLoadResponse {
     private long unqUsrId;
 
     @Schema(description = "첨부파일 id")
-    private long fileId;
+    private Long fileId;
 
 
 

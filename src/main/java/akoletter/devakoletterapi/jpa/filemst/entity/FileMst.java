@@ -1,16 +1,14 @@
 package akoletter.devakoletterapi.jpa.filemst.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+@Builder
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -18,13 +16,15 @@ import lombok.NoArgsConstructor;
 @IdClass(FileMstPk.class)
 public class FileMst {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "file_id")
   @Schema(description = "파일 ID")
   private Long fileId;
 
+
   @Column(name = "file_seq_no")
   @Schema(description = "파일의 시퀀스 번호")
-  private Long fileSeqNo;
+  private long fileSeqNo;
 
   @Column(name = "ref_tbl")
   @Schema(description = "참조하는 테이블 이름")

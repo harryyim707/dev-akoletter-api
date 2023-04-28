@@ -1,7 +1,9 @@
-package akoletter.devakoletterapi.util.File.service;
+package akoletter.devakoletterapi.util.File.controller;
 
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -13,15 +15,14 @@ import java.util.List;
 public class FileHandler {
 
     public List<FileMst>  parseFileInfo(
-            Long boardID,
+            Long fileId,
             List<MultipartFile> multipartFiles
     ) throws Exception {
 
         // 반환을 할 파일 리스트
         List<FileMst> fileList = new ArrayList<>();
 
-
-        // 파일이 빈 것이 들어오면 빈 것을 반환
+        // 일이 빈 것이 들어오면 빈 것을 반환
         if (multipartFiles.isEmpty()) {
             return fileList;
         }
@@ -47,11 +48,11 @@ public class FileHandler {
             file.mkdirs();
         }
 
-        // 파일들을 이제 만져볼 것이다
+        // 파일 직접다루는 코드
         for (MultipartFile multipartFile : multipartFiles) {
             // 파일이 비어 있지 않을 때 작업을 시작해야 오류가 나지 않는다
             if (!multipartFile.isEmpty()) {
-                // jpeg, png, gif 파일들만 받아서 처리할 예정
+                // jpeg, png 파일들만 받아서 처리할 예정
                 String contentType = multipartFile.getContentType();
                 String originalFileExtension;
                 // 확장자 명이 없으면 이 파일은 잘 못 된 것이다
@@ -63,7 +64,7 @@ public class FileHandler {
                     } else if (contentType.contains("image/png")) {
                         originalFileExtension = ".png";
                     } else if (contentType.contains("image/gif")) {
-                        originalFileExtension = ".gif";
+                        originalFileExtension = ".gif"; //혹시몰라 노재가 gif도 줄지..
                     }
                     // 다른 파일 명이면 아무 일 하지 않는다
                     else {
@@ -73,11 +74,14 @@ public class FileHandler {
                 // 각 이름은 겹치면 안되므로 나노 초까지 동원하여 지정
                 String new_file_name = System.nanoTime() + originalFileExtension;
                 // 생성 후 리스트에 추가
-                Board board = Board.builder()
-                        .boardIdx(boardID)
-                        .originalFileName(multipartFile.getOriginalFilename())
-                        .storedFileName(path + "/" + new_file_name)
+                FileMst board = FileMst.builder()
+//                        .fileSeqNo(fileId)
+                        .orgFileNm(multipartFile.getOriginalFilename())
                         .fileSize(multipartFile.getSize())
+                        .filePath(path)
+                        .fileExt(originalFileExtension)
+                        .fileType(originalFileExtension)
+                        .refTbl("testtable")
                         .build();
                 fileList.add(board);
 

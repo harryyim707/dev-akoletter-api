@@ -23,6 +23,7 @@ public class PostListLoadServiceImpl implements PostListLoadService{
     private final Response response;
     private final PostMstRepository postMstRepository;
 
+
     private final PostMstRepositoryForQueryDsl postMstRepositoryForQueryDsl;
 
     @Override
