@@ -9,6 +9,7 @@ plugins {
 group = 'akoletter'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '19'
+targetCompatibility = '1.8'
 
 configurations {
 	compileOnly {
