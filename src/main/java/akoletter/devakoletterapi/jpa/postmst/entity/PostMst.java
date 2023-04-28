@@ -37,5 +37,5 @@ public class PostMst extends BaseEntity {
 
   @Column(name = "fk_file_id")
   @Schema(description = "첨부파일 id")
-  private Long fileId;
+  private int fileId;
 }

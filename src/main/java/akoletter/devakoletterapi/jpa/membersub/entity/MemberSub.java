@@ -25,7 +25,7 @@ public class MemberSub {
 
   @Column(name = "fk_file_id")
   @Schema(description = "프로필 사진 이미지 파일 id")
-  private Long fileId;
+  private int fileId;
 
   @Column(name = "intro_comment")
   @Schema(description = "자기 소개")

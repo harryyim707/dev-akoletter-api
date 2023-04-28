@@ -19,7 +19,7 @@ public class FileMst {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "file_id")
   @Schema(description = "파일 ID")
-  private Long fileId;
+  private int fileId;
 
 
   @Column(name = "file_seq_no")

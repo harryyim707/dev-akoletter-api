@@ -39,9 +39,9 @@ public class FileServiceImpl implements FileService {
         // 파일에 대해 DB에 저장하고 가지고 있을 것
         else{
             for (FileMst boards : list) {
-                pictureBeans.add(boards); //여기서 걸림
+                pictureBeans.add(boards);
             }
-            fileMstRepository.saveAll(pictureBeans);
+            fileMstRepository.saveAll(pictureBeans); //여기서 걸림
         }
 
         return pictureBeans;
@@ -51,8 +51,8 @@ public class FileServiceImpl implements FileService {
         return fileMstRepository.findAll();
     }
 
-    public Optional<FileMst> findBoard(Long fileId) {
+    public Optional<FileMst> findBoard(int fileId) {
 
-        return fileMstRepository.findById(fileId);
+        return fileMstRepository.findByfileId(fileId);
     }
 }

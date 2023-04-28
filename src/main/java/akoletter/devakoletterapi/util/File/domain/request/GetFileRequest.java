@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class GetFileRequest {
-    private Long fileId;
+    private int fileId;
 }

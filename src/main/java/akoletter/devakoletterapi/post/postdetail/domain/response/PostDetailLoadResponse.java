@@ -24,7 +24,7 @@ public class PostDetailLoadResponse {
     private long unqUsrId;
 
     @Schema(description = "첨부파일 id")
-    private Long fileId;
+    private int fileId;
 
 
 

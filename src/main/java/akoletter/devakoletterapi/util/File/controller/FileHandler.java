@@ -15,7 +15,7 @@ import java.util.List;
 public class FileHandler {
 
     public List<FileMst>  parseFileInfo(
-            Long fileId,
+            int fileId ,
             List<MultipartFile> multipartFiles
     ) throws Exception {
 
@@ -74,7 +74,9 @@ public class FileHandler {
                 // 각 이름은 겹치면 안되므로 나노 초까지 동원하여 지정
                 String new_file_name = System.nanoTime() + originalFileExtension;
                 // 생성 후 리스트에 추가
+
                 FileMst board = FileMst.builder()
+
 //                        .fileSeqNo(fileId)
                         .orgFileNm(multipartFile.getOriginalFilename())
                         .fileSize(multipartFile.getSize())

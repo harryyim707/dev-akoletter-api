@@ -4,5 +4,8 @@ import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMstPk;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FileMstRepository extends JpaRepository<FileMst, Long> {
+import java.util.Optional;
+
+public interface FileMstRepository extends JpaRepository<FileMst, FileMstPk> {
+    Optional<FileMst> findByfileId(int fileId);
 }

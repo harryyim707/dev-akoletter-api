@@ -41,7 +41,7 @@ public class FileController {
 
 
     @GetMapping("/board")//get은 불러오기
-    public String getBoard(GetFileRequest request) {
+    public String getBoard(@RequestBody GetFileRequest request) {
         FileMst board = fileService.findBoard(request.getFileId()).orElseThrow(RuntimeException::new);
         String imgPath = board.getOrgFileNm();
         log.info(imgPath);
