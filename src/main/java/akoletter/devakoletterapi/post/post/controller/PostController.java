@@ -1,9 +1,8 @@
-package akoletter.devakoletterapi.post.postdetail.controller;
+package akoletter.devakoletterapi.post.post.controller;
 
-import akoletter.devakoletterapi.post.PostListLoad.domain.response.PostListLoadResponse;
-import akoletter.devakoletterapi.post.postdetail.domain.request.PostDetailLoadRequest;
-import akoletter.devakoletterapi.post.postdetail.domain.response.PostDetailLoadResponse;
-import akoletter.devakoletterapi.post.postdetail.service.PostDetailLoadService;
+import akoletter.devakoletterapi.post.post.domain.request.GetPostDetailRequest;
+import akoletter.devakoletterapi.post.post.domain.response.GetPostDetailResponse;
+import akoletter.devakoletterapi.post.post.service.PostService;
 import akoletter.devakoletterapi.util.response.Helper;
 import akoletter.devakoletterapi.util.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,21 +12,20 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
-@Tag(name = "post detail", description = "상세 게시글 불러오기 콘트롤러")
+@Tag(name = "post", description = "게시글 콘트롤러")
 @Validated
-public class PostDetailLoadController {
-    private final PostDetailLoadService postDetailLoadService;
+public class PostController {
+    private final PostService postService;
     private final Response response;
 
-    @GetMapping("/postdetail")
-    public ResponseEntity<PostDetailLoadResponse> postdetailload(@RequestBody PostDetailLoadRequest request, Errors errors) {
+    @GetMapping("/getpostdetail/{id}")
+    public ResponseEntity<GetPostDetailResponse> getPostDetail(@RequestBody GetPostDetailRequest request, Errors errors) {
         if(errors.hasErrors()){
-            return (ResponseEntity<PostDetailLoadResponse>) response.invalidFields(Helper.refineErrors(errors));
+            return (ResponseEntity<GetPostDetailResponse>) response.invalidFields(Helper.refineErrors(errors));
         }
-        return postDetailLoadService.postdetailload(request);
+        return postService.postdetailload(request);
     }
 }

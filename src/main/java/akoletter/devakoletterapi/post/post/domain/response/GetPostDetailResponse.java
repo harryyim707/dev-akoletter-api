@@ -1,4 +1,4 @@
-package akoletter.devakoletterapi.post.postdetail.domain.response;
+package akoletter.devakoletterapi.post.post.domain.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDetailLoadResponse {
+public class GetPostDetailResponse {
     @Schema(description = "게시글 id")
     private Long postId;
 

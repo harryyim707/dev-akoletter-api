@@ -72,12 +72,4 @@ public class MemberController {
     }
     return memberService.delete(request);
   }
-
-  @PostMapping("/test")
-  public ResponseEntity< ? > test(@Valid @RequestBody TestRequest request, Errors errors){
-    if(errors.hasErrors()){
-      return response.invalidFields(Helper.refineErrors(errors));
-    }
-    return memberService.test(request);
-  }
 }

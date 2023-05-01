@@ -1,4 +1,4 @@
-package akoletter.devakoletterapi.post.postdetail.domain.request;
+package akoletter.devakoletterapi.post.post.domain.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PostDetailLoadRequest {
+public class GetPostDetailRequest {
     @Schema(
             description = "게시글 아이디",
             hidden = true

@@ -1,14 +1,10 @@
-package akoletter.devakoletterapi.post.postdetail.service;
+package akoletter.devakoletterapi.post.post.service;
 
-import akoletter.devakoletterapi.post.PostListLoad.domain.request.PostListLoadRequest;
-import akoletter.devakoletterapi.post.PostListLoad.domain.response.PostListLoadResponse;
-import akoletter.devakoletterapi.post.postdetail.domain.request.PostDetailLoadRequest;
-import akoletter.devakoletterapi.post.postdetail.domain.response.PostDetailLoadResponse;
+import akoletter.devakoletterapi.post.post.domain.request.GetPostDetailRequest;
+import akoletter.devakoletterapi.post.post.domain.response.GetPostDetailResponse;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
-public interface PostDetailLoadService {
-    ResponseEntity<PostDetailLoadResponse> postdetailload(PostDetailLoadRequest request);
+public interface PostService {
+    ResponseEntity<GetPostDetailResponse> postdetailload(GetPostDetailRequest request);
 
 }

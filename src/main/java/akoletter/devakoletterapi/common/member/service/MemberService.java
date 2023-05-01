@@ -18,7 +18,5 @@ public interface MemberService {
 
   ResponseEntity<?> delete(DeleteAccountRequest request);
 
-  ResponseEntity<?> test(TestRequest request);
-
   ResponseEntity<?> authorityInsert(SignUpRequest request);
 }

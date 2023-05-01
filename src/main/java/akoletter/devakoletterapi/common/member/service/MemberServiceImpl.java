@@ -189,11 +189,6 @@ public class MemberServiceImpl implements MemberService {
     return response.success("회원 탈퇴가 완료되었습니다.");
   }
 
-  @Override
-  public ResponseEntity<?> test(TestRequest request) {
-    return response.success(request.getRequestId());
-  }
-
 
   @Override
   public ResponseEntity<?> logout(LogoutRequest request) {
