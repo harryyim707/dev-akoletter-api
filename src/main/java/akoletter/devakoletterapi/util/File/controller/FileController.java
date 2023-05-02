@@ -1,8 +1,6 @@
 package akoletter.devakoletterapi.util.File.controller;
 
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
-import akoletter.devakoletterapi.post.PostListLoad.service.PostListLoadService;
-import akoletter.devakoletterapi.util.File.domain.request.FileUploadRequest;
 import akoletter.devakoletterapi.util.File.domain.request.GetFileRequest;
 import akoletter.devakoletterapi.util.File.service.FileService;
 import akoletter.devakoletterapi.util.response.Response;
@@ -14,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,11 +31,13 @@ public class FileController {
 
 
     @PostMapping("/board")//post는 저장하기
-    public ResponseEntity<?> createBoard(
-            @Validated @RequestParam(value ="files", required=false) List<MultipartFile> files
+    public String addBoard(
+            @Validated @RequestPart(value ="files", required=false) List<MultipartFile> files
     ) throws Exception {
+
         fileService.addBoard(FileMst.builder().build(), files);
-        return ResponseEntity.ok().build();
+        return "FILE SAVE COMPLETE"; //여기서 걸리니까 service 추가해서 리스폰스를 바꿔보자
+
     }
 
 

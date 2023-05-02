@@ -1,4 +1,4 @@
-package akoletter.devakoletterapi.post.PostListLoad.domain.request;
+package akoletter.devakoletterapi.post.domain.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PostListLoadRequest {
-
+public class GetPostDetailRequest {
     @Schema(
-            description = "불러올 게시글 수",
+            description = "게시글 아이디",
             hidden = true
     )
-    private long postNm;
+    private long postId;
 }

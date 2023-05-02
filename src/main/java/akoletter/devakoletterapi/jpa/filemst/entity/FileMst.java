@@ -1,5 +1,6 @@
 package akoletter.devakoletterapi.jpa.filemst.entity;
 
+import akoletter.devakoletterapi.util.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,8 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "file_mst")
-@IdClass(FileMstPk.class)
-public class FileMst {
+public class FileMst extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "file_id")
@@ -24,7 +24,7 @@ public class FileMst {
 
   @Column(name = "file_seq_no")
   @Schema(description = "파일의 시퀀스 번호")
-  private long fileSeqNo;
+  private int fileSeqNo;
 
   @Column(name = "ref_tbl")
   @Schema(description = "참조하는 테이블 이름")

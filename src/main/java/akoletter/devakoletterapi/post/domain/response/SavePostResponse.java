@@ -1,4 +1,4 @@
-package akoletter.devakoletterapi.util.File.domain.response;
+package akoletter.devakoletterapi.post.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileUploadResponse {
+public class SavePostResponse {
 
     private String success;
 }

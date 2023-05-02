@@ -36,6 +36,17 @@ public class PostMst extends BaseEntity {
   private Long unqUsrId;
 
   @Column(name = "fk_file_id")
-  @Schema(description = "첨부파일 id")
+  @Schema(description = "첨부파일 id1")
   private int fileId;
+
+  @Column(name = "fk_file_id2")
+  @Schema(description = "첨부파일 id2")
+  private int fileId2;
+
+  @Column(name = "fk_file_id3")
+  @Schema(description = "첨부파일 id3")
+  private int fileId3;
+
+
+
 }

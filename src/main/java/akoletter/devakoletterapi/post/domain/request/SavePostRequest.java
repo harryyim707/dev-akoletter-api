@@ -1,18 +1,20 @@
-package akoletter.devakoletterapi.post.post.domain.response;
+package akoletter.devakoletterapi.post.domain.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class GetPostDetailResponse {
-    @Schema(description = "게시글 id")
-    private Long postId;
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class SavePostRequest {
+    @Schema(description = "게시글 아이디")
+    private long postId;
 
     @Schema(description = "게시글 제목")
     private String postTitle;
@@ -21,10 +23,8 @@ public class GetPostDetailResponse {
     private String postContent;
 
     @Schema(description = "게시글 작성자 id")
-    private long unqUsrId;
+    private Long unqUsrId;
 
-    @Schema(description = "첨부파일 id")
-    private int fileId;
 
 
 

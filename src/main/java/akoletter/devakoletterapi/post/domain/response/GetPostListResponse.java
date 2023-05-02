@@ -1,8 +1,6 @@
-package akoletter.devakoletterapi.post.PostListLoad.domain.response;
+package akoletter.devakoletterapi.post.domain.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import akoletter.devakoletterapi.jpa.postmst.entity.PostMst;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostListLoadResponse {
+public class GetPostListResponse {
 
     @Schema(description = "게시글 id")
     private Long postId;
@@ -32,7 +30,7 @@ public class PostListLoadResponse {
 
 
 
-    public PostListLoadResponse(PostMst post){
+    public GetPostListResponse(PostMst post){
         this.postId=post.getPostId();
         this.postContent=post.getPostContent();
         this.postTitle=post.getPostTitle();

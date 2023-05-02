@@ -31,20 +31,25 @@ public class FileServiceImpl implements FileService {
             List<MultipartFile> files
     ) throws Exception {
         // 파일을 저장하고 그 Board 에 대한 list 를 가지고 있는다
+
         List<FileMst> list = fileHandler.parseFileInfo(board.getFileId(), files);
-        List<FileMst> pictureBeans = new ArrayList<>();
+        int size = list.size();
+        int index = 0;
         if (list.isEmpty()){
             return null;
         }
         // 파일에 대해 DB에 저장하고 가지고 있을 것
         else{
-            for (FileMst boards : list) {
-                pictureBeans.add(boards);
+            while (size>0) {
+                FileMst pictureBeans = list.get(index);
+                fileMstRepository.saveAndFlush(pictureBeans);
+                size--;
+                index++;
+                pictureBeans.getFileId();
             }
-            fileMstRepository.saveAll(pictureBeans); //여기서 걸림
-        }
 
-        return pictureBeans;
+        }
+        return list;
     }
 
     public List<FileMst> findBoards() {
