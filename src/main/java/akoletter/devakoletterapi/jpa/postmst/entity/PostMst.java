@@ -4,6 +4,8 @@ import akoletter.devakoletterapi.util.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
@@ -21,6 +23,7 @@ public class PostMst extends BaseEntity {
   @Id
   @Column(name = "post_id")
   @Schema(description = "게시글 id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long postId;
 
   @Column(name = "post_title")
@@ -30,6 +33,10 @@ public class PostMst extends BaseEntity {
   @Column(name = "post_content")
   @Schema(description = "게시글 내용")
   private String postContent;
+
+  @Column(name = "category", length = 10000)
+  @Schema(description = "게시글 카테고리")
+  private String category;
 
   @Column(name = "fk_unq_usr_id")
   @Schema(description = "게시글 작성자 id")

@@ -26,7 +26,7 @@ public class FileServiceImpl implements FileService {
         this.fileHandler = new FileHandler(); //생성자
     }
     //저장해주는 메소드
-    public List<FileMst> addBoard(
+    public List<FileMst> saveFile(
             FileMst board,
             List<MultipartFile> files
     ) throws Exception {

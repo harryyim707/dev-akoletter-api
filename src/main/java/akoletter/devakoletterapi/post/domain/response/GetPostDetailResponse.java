@@ -1,6 +1,7 @@
 package akoletter.devakoletterapi.post.domain.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +22,10 @@ public class GetPostDetailResponse {
     private String postContent;
 
     @Schema(description = "게시글 작성자 id")
-    private long unqUsrId;
+    private String usrId;
 
     @Schema(description = "첨부파일 id")
-    private int fileId;
+    private List<Integer> fileId;
 
 
 

@@ -3,10 +3,13 @@ package akoletter.devakoletterapi.editor.service;
 import akoletter.devakoletterapi.editor.domain.request.DocumentObject;
 import akoletter.devakoletterapi.editor.domain.request.OptionObject;
 import akoletter.devakoletterapi.editor.domain.request.SummaryRequest;
+import akoletter.devakoletterapi.editor.domain.response.ClovaResponse;
 import akoletter.devakoletterapi.editor.domain.response.SummaryResponse;
 import akoletter.devakoletterapi.util.response.Response;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.json.JSONException;
@@ -20,7 +23,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class EditorServiceImpl implements EditorService{
+public class EditorServiceImpl implements EditorService {
+
   @Value("${clientId}")
   private String clientID;
 
@@ -57,11 +61,12 @@ public class EditorServiceImpl implements EditorService{
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
     httpHeaders.add("X-NCP-APIGW-API-KEY-ID", clientID);
     httpHeaders.add("X-NCP-APIGW-API-KEY", clientSecret);
-    httpHeaders.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
+    httpHeaders.setAccept(Arrays.asList(new MediaType[]{MediaType.APPLICATION_JSON}));
     HttpEntity<String> requestEntity = new HttpEntity<>(jsonObject.toString(), httpHeaders);
     SummaryResponse summaryResponse = new SummaryResponse();
-    String summary = restTemplate.postForObject(url, requestEntity, String.class);
-    summaryResponse.setSummary(summary);
+    ClovaResponse summary = restTemplate.postForObject(url, requestEntity, ClovaResponse.class);
+    List<String> splitSummary = List.of(summary.getSummary().split("\n"));
+    summaryResponse.setSummary(splitSummary);
     summaryResponse.setReferences(request.getReferences());
     summaryResponse.setOriginal(documentObject);
 

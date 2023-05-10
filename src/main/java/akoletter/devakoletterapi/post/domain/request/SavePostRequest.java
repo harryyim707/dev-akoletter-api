@@ -13,17 +13,17 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SavePostRequest {
-    @Schema(description = "게시글 아이디")
-    private long postId;
-
     @Schema(description = "게시글 제목")
     private String postTitle;
 
     @Schema(description = "게시글 내용")
     private String postContent;
 
+    @Schema(description = "게시글 카테고리")
+    private String category;
+
     @Schema(description = "게시글 작성자 id")
-    private Long unqUsrId;
+    private String usrId;
 
 
 
