@@ -51,6 +51,7 @@ public class PostController {
         return postService.getPostList(request);
     }
 
+    // TODO: EditorController로 이동시켜야 함
     @PostMapping("/savepost")
     public ResponseEntity<?> savePost(@RequestPart (value ="request") SavePostRequest request,
                                                      @RequestPart(value ="files", required=false) List<MultipartFile> files, Errors errors)throws Exception{
