@@ -28,6 +28,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @Tag(name = "post", description = "게시글 콘트롤러")
 @Validated
 public class PostController {
@@ -36,14 +37,15 @@ public class PostController {
     private final MemberMstRepository memberMstRepository;
     private final PostMstRepository postMstRepository;
 
-    @GetMapping("/main/getpost")
+    @PostMapping("/main/getpost")
     public ResponseEntity<GetPostDetailResponse> getPostDetail(@RequestBody GetPostDetailRequest request, Errors errors) {
         if(errors.hasErrors()){
             return (ResponseEntity<GetPostDetailResponse>) response.invalidFields(Helper.refineErrors(errors));
         }
         return postService.getPostDetail(request);
     }
-    @GetMapping("/getpostlist")
+    @PostMapping("/getpostlist")
+    @CrossOrigin(origins="*", allowedHeaders = "*")
     public ResponseEntity<?> getPostList(@RequestBody GetPostListRequest request, Errors errors) {
         if(errors.hasErrors()){
             return response.invalidFields(Helper.refineErrors(errors));
