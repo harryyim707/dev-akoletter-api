@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavePostResponse {
-
-    private String success;
+public class GetImageResponse {
+  private byte[] image;
 }

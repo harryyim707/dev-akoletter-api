@@ -34,7 +34,7 @@ dependencies {
 	implementation 'mysql:mysql-connector-java:8.0.31'
 	implementation 'mysql:mysql-connector-java:8.0.32'
     //querydsl
-
+	implementation 'commons-io:commons-io:2.6'
 	//lombok version care
 	implementation 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok'
