@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -52,7 +51,6 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  @CrossOrigin(origins="*", allowedHeaders = "*")
   public ResponseEntity<?> getPostList(GetPostListRequest request) {
     List<PostMst> result = new ArrayList<>();
     String category = request.getCategory();
