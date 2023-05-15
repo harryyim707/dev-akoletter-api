@@ -11,6 +11,7 @@ public interface PostMstRepository extends JpaRepository<PostMst, PostMstPk> {
 
 
     //PostMst findTop10ByOrderByfrstRgstDt();
+ /*   List<PostMst> findTop10ByOrderBylastMdfyDtDesc();*/
     List<PostMst> findTop10By();
 
     Optional<PostMst> findByPostId(Long postId);
