@@ -20,13 +20,14 @@ public class FileServiceImpl implements FileService {
     private final FileHandler fileHandler;
 
 
+    // TODO :파일 불러오기 기능 구현해야 함
     @Autowired
     public FileServiceImpl(FileMstRepository fileMstRepository) {
         this.fileMstRepository = fileMstRepository;
         this.fileHandler = new FileHandler(); //생성자
     }
     //저장해주는 메소드
-    public List<FileMst> addBoard(
+    public List<FileMst> saveFile(
             FileMst board,
             List<MultipartFile> files
     ) throws Exception {

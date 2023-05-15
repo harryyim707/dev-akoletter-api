@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class GetPostListRequest {
-
     @Schema(
-            description = "불러올 게시글 수",
-            hidden = true
+        description = "카테고리"
     )
-    private long postNm;
+  private String category;
 }

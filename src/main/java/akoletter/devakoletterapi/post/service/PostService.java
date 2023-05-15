@@ -1,5 +1,6 @@
 package akoletter.devakoletterapi.post.service;
 
+import akoletter.devakoletterapi.jpa.postmst.entity.PostMst;
 import akoletter.devakoletterapi.post.domain.request.GetPostDetailRequest;
 import akoletter.devakoletterapi.post.domain.request.GetPostListRequest;
 import akoletter.devakoletterapi.post.domain.request.SavePostRequest;
@@ -13,8 +14,8 @@ import java.util.List;
 
 public interface PostService {
     ResponseEntity<GetPostDetailResponse> getPostDetail(GetPostDetailRequest request);
-    ResponseEntity<List<GetPostListResponse>> getPostList(GetPostListRequest request);
-    ResponseEntity<SavePostResponse> savePost(SavePostRequest request, List<MultipartFile> files) throws Exception;
+    ResponseEntity<?> getPostList(GetPostListRequest request);
+    SavePostResponse savePost(SavePostRequest request, List<MultipartFile> files) throws Exception;
 
 
 }

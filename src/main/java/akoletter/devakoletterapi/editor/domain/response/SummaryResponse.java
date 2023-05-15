@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 public class SummaryResponse {
-  private String summary;
+  private List<String> summary;
   private DocumentObject original;
   private List<String> references;
 }

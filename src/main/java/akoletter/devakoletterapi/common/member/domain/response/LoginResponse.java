@@ -23,7 +23,7 @@ public class LoginResponse {
   private String usrEmail;
 
   private String usrTelNo;
-
+  @Builder.Default
   private List<Authority> roles = new ArrayList<>();
 
   private TokenDto token;
