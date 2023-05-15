@@ -84,6 +84,7 @@ public class FileHandler {
 
                 FileMst board = FileMst.builder()
                 .fileId(fileId)
+                .fileNm(new_file_name)
                 .orgFileNm(multipartFile.getOriginalFilename())
                 .fileSize(multipartFile.getSize())
                 .filePath(path)

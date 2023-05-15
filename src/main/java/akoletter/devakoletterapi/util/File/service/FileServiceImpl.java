@@ -53,12 +53,7 @@ public class FileServiceImpl implements FileService {
         return list;
     }
 
-    public List<FileMst> findBoards() {
+    public List<FileMst> findFiles() {
         return fileMstRepository.findAll();
-    }
-
-    public Optional<FileMst> findBoard(int fileId) {
-
-        return fileMstRepository.findByfileId(fileId);
     }
 }

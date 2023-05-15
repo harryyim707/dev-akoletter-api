@@ -21,6 +21,9 @@ public class FileMst extends BaseEntity {
   @Schema(description = "파일 ID")
   private int fileId;
 
+  @Column(name = "file_nm")
+  @Schema(description = "저장된 파일 이름")
+  private String fileNm;
 
   @Column(name = "file_seq_no")
   @Schema(description = "파일의 시퀀스 번호")

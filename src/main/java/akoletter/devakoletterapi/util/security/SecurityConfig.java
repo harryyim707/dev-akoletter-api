@@ -60,7 +60,7 @@ public class SecurityConfig {
         // 조건별로 요청 허용/제한 설정
         .authorizeHttpRequests()
         // 회원가입과 로그인은 모두 승인
-        .requestMatchers("/member/join", "/member/login", "/member/reissue", "/main", "/main/getpost/**").permitAll()
+        .requestMatchers("/member/join", "/member/login", "/member/reissue", "/main", "/main/getpost/**", "/getpostlist", "/images/**").permitAll()
         .requestMatchers("/**").permitAll()
         .anyRequest().authenticated()
         .and()
