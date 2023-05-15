@@ -27,21 +27,9 @@ public class PostController {
     private final PostService postService;
     private final Response response;
 
-<<<<<<< HEAD
-    @GetMapping("/main/getpost")
-    public ResponseEntity<GetPostDetailResponse> getPostDetail(@RequestBody GetPostDetailRequest request, Errors errors) {
-        if(errors.hasErrors()){
-            return (ResponseEntity<GetPostDetailResponse>) response.invalidFields(Helper.refineErrors(errors));
-        }
-        return postService.getPostDetail(request);
-    }
-    @GetMapping("/getpostlist")
-    public ResponseEntity<?> getPostList(@RequestBody GetPostListRequest request, Errors errors) {
-=======
 
     @GetMapping("/getpost/{id}")
     public ResponseEntity<?> getPostDetail(@PathVariable("id") long postId, @RequestBody GetPostDetailRequest request, Errors errors) {
->>>>>>> dev_harry
         if(errors.hasErrors()){
             return response.invalidFields(Helper.refineErrors(errors));
         }
@@ -63,10 +51,4 @@ public class PostController {
         }
         return postService.showImage(fileId);
     }
-
-
-    // TODO: EditorController로 이동시켜야 함
-
-
-
 }

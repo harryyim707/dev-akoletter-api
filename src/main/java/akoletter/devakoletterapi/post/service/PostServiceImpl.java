@@ -58,34 +58,6 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-<<<<<<< HEAD
-  public SavePostResponse savePost(SavePostRequest request,
-      List<MultipartFile> files) throws Exception {
-    SavePostResponse savePostResponse = new SavePostResponse();
-    PostMst postMst = new PostMst();
-    String title = request.getPostTitle();
-    MemberMst memberMst = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
-    Long unqUsrId = memberMst.getUnqUsrId();
-    if(postMstRepository.existsByPostTitle(title)){
-      savePostResponse.setSuccess("exists");
-      return savePostResponse;
-    }
-    postMst.setPostContent(request.getPostContent());
-    postMst.setPostTitle(request.getPostTitle());
-    postMst.setUnqUsrId(unqUsrId);
-    postMst.setCategory(request.getCategory());
-    postMst.setFrstRgstId(memberMst.getUsrId());
-    postMst.setLastMdfyId(memberMst.getUsrId());
-    postMst.setCategory(request.getCategory());
-    List<FileMst> list = fileService.saveFile(FileMst.builder().build(), files);
-    //file들을 저장하고 정보를 file.mst table에 추가.
-    postMst.setFileId(list.get(0).getFileId());
-    postMst.setFileId2(list.get(1).getFileId());
-    postMst.setFileId3(list.get(2).getFileId());
-    postMstRepository.saveAndFlush(postMst);
-    savePostResponse.setSuccess("success");
-    return savePostResponse;
-=======
   public ResponseEntity<?> showImage(int fileId) throws IOException {
     String absolutePath = new File("").getAbsolutePath();
     FileMst fileMst = fileMstRepository.findByfileId(fileId).orElse(null);
@@ -97,7 +69,6 @@ public class PostServiceImpl implements PostService {
     resp.setImage(image);
     imageStream.close();
     return response.success(resp, "파일 불러오기 성공", HttpStatus.OK);
->>>>>>> dev_harry
   }
 
 }
