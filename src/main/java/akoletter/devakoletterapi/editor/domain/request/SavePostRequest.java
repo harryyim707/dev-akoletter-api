@@ -1,4 +1,4 @@
-package akoletter.devakoletterapi.post.domain.request;
+package akoletter.devakoletterapi.editor.domain.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
