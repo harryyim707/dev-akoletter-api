@@ -29,26 +29,19 @@ public class PostController {
 
 
     @GetMapping("/getpost/{id}")
-    public ResponseEntity<?> getPostDetail(@PathVariable("id") long postId, @RequestBody GetPostDetailRequest request, Errors errors) {
-        if(errors.hasErrors()){
-            return response.invalidFields(Helper.refineErrors(errors));
-        }
+    public ResponseEntity<?> getPostDetail(@PathVariable("id") long postId) {
+
         return postService.getPostDetail(postId);
     }
     @GetMapping("/getpostlist/{category}")
-    public ResponseEntity<?> getPostList(@PathVariable("category") String category, @RequestBody GetPostListRequest request, Errors errors) {
-        if(errors.hasErrors()){
-            return response.invalidFields(Helper.refineErrors(errors));
-        }
+    public ResponseEntity<?> getPostList(@PathVariable("category") String category) {
+
         return postService.getPostList(category);
     }
 
     @GetMapping(value = "/images/{fileId}")
-    public ResponseEntity<?> showImage(@PathVariable("fileId") int fileId, @RequestBody
-        GetImageRequest request, Errors errors) throws IOException{
-        if(errors.hasErrors()){
-            return response.fail("잘못된 파일 아이디", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> showImage(@PathVariable("fileId") int fileId) throws IOException{
+       
         return postService.showImage(fileId);
     }
 }
