@@ -80,6 +80,7 @@ public class PostServiceImpl implements PostService {
     postMst.setPostContent(request.getPostContent());
     postMst.setPostTitle(request.getPostTitle());
     postMst.setUnqUsrId(unqUsrId);
+    postMst.setCategory(request.getCategory());
     postMst.setFrstRgstId(memberMst.getUsrId());
     postMst.setLastMdfyId(memberMst.getUsrId());
     postMst.setCategory(request.getCategory());

@@ -36,14 +36,14 @@ public class PostController {
     private final MemberMstRepository memberMstRepository;
     private final PostMstRepository postMstRepository;
 
-    @GetMapping("/main/getpost/{id}")
+    @GetMapping("/main/getpost")
     public ResponseEntity<GetPostDetailResponse> getPostDetail(@RequestBody GetPostDetailRequest request, Errors errors) {
         if(errors.hasErrors()){
             return (ResponseEntity<GetPostDetailResponse>) response.invalidFields(Helper.refineErrors(errors));
         }
         return postService.getPostDetail(request);
     }
-    @GetMapping("/")
+    @GetMapping("/getpostlist")
     public ResponseEntity<?> getPostList(@RequestBody GetPostListRequest request, Errors errors) {
         if(errors.hasErrors()){
             return response.invalidFields(Helper.refineErrors(errors));
