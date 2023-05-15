@@ -21,6 +21,7 @@ import akoletter.devakoletterapi.util.File.service.FileService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RequestMapping("/post")
 @Tag(name = "post", description = "게시글 콘트롤러")
@@ -39,11 +40,9 @@ public class PostController {
         return postService.getPostDetail(request);
     }
     @GetMapping("/postlist")
-    public ResponseEntity<List<GetPostListResponse>> getPostList(@RequestBody GetPostListRequest request, Errors errors) {
-        if(errors.hasErrors()){
-            return (ResponseEntity<List<GetPostListResponse>>) response.invalidFields(Helper.refineErrors(errors));
-        }
-        return postService.getPostList(request);
+    public ResponseEntity<List<GetPostListResponse>> getPostList() {
+
+        return postService.getPostList();
     }
 
     @PostMapping("/savepost")

@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface PostService {
     ResponseEntity<GetPostDetailResponse> getPostDetail(GetPostDetailRequest request);
-    ResponseEntity<List<GetPostListResponse>> getPostList(GetPostListRequest request);
+    ResponseEntity<List<GetPostListResponse>> getPostList();
     ResponseEntity<SavePostResponse> savePost(SavePostRequest request, List<MultipartFile> files) throws Exception;
 
 
