@@ -35,6 +35,7 @@ public class PostServiceImpl implements PostService {
     postDetailResponse.setPostId(postMst.getPostId());
     postDetailResponse.setPostTitle(postMst.getPostTitle());
     postDetailResponse.setPostContent(postMst.getPostContent());
+    postDetailResponse.setCategory(postMst.getCategory());
     List<Integer> fileIds = new ArrayList<>();
     fileIds.add(postMst.getFileId());
     fileIds.add(postMst.getFileId2());
@@ -48,9 +49,9 @@ public class PostServiceImpl implements PostService {
   public ResponseEntity<?> getPostList(String category) {
     List<PostMst> result = new ArrayList<>();
     if (!"all".equals(category)) {
-      result = postMstRepository.findTop10ByCategory(category);
+      result = postMstRepository.findTop12ByCategory(category);
     } else {
-      result = postMstRepository.findTop10By();
+      result = postMstRepository.findTop12By();
     }
 
     return response.success(result, "게시글리스트 불러오기 성공.",

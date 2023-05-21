@@ -27,6 +27,8 @@ public class GetPostDetailResponse {
     @Schema(description = "첨부파일 id")
     private List<Integer> fileId;
 
+    private String category;
+
 
 
 }
