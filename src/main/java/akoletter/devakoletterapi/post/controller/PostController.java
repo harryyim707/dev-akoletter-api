@@ -33,6 +33,7 @@ public class PostController {
 
         return postService.getPostDetail(postId);
     }
+
     @GetMapping("/getpostlist/{category}")
     public ResponseEntity<?> getPostList(@PathVariable("category") String category) {
 
