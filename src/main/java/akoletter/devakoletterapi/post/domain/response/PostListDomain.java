@@ -13,7 +13,7 @@ public class PostListDomain {
 
   private String postTitle;
 
-  private String writer;
+  private String usrId;
 
   private int fileId;
 

@@ -43,6 +43,9 @@ public class PostServiceImpl implements PostService {
     postDetailResponse.setCategory(postMst.getCategory());
     String date = postMst.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     postDetailResponse.setDate(date);
+    MemberMst memberMst = memberMstRepository.findByUnqUsrId(postMst.getUnqUsrId()).orElse(null);
+    assert memberMst != null;
+    postDetailResponse.setUsrId(memberMst.getUsrId());
     postDetailResponse.setFileId(postMst.getFileId());
     return response.success(postDetailResponse, "상세 게시글 불러오기 성공.",
         HttpStatus.OK);
@@ -62,8 +65,9 @@ public class PostServiceImpl implements PostService {
       domain.setPostId(o.getPostId());
       domain.setPostTitle(o.getPostTitle());
       MemberMst memberMst = memberMstRepository.findByUnqUsrId(o.getUnqUsrId()).orElse(null);
+      assert memberMst != null;
       String usrId = memberMst.getUsrId();
-      domain.setWriter(usrId);
+      domain.setUsrId(usrId);
       domain.setFileId(o.getFileId());
       String date = o.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
       domain.setDate(date);
