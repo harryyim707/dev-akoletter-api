@@ -2,15 +2,19 @@ package akoletter.devakoletterapi.post.service;
 
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
 import akoletter.devakoletterapi.jpa.filemst.repo.FileMstRepository;
+import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
+import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
 import akoletter.devakoletterapi.jpa.postmst.entity.PostMst;
 import akoletter.devakoletterapi.jpa.postmst.repo.PostMstRepository;
 import akoletter.devakoletterapi.post.domain.response.GetImageResponse;
 import akoletter.devakoletterapi.post.domain.response.GetPostDetailResponse;
+import akoletter.devakoletterapi.post.domain.response.PostListDomain;
 import akoletter.devakoletterapi.util.response.Response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class PostServiceImpl implements PostService {
   private final Response response;
   private final PostMstRepository postMstRepository;
   private final FileMstRepository fileMstRepository;
+  private final MemberMstRepository memberMstRepository;
 
 
   @Override
@@ -36,6 +41,8 @@ public class PostServiceImpl implements PostService {
     postDetailResponse.setPostTitle(postMst.getPostTitle());
     postDetailResponse.setPostContent(postMst.getPostContent());
     postDetailResponse.setCategory(postMst.getCategory());
+    String date = postMst.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    postDetailResponse.setDate(date);
     List<Integer> fileIds = new ArrayList<>();
     fileIds.add(postMst.getFileId());
     fileIds.add(postMst.getFileId2());
@@ -53,8 +60,21 @@ public class PostServiceImpl implements PostService {
     } else {
       result = postMstRepository.findTop12By();
     }
+    List<PostListDomain> postList = new ArrayList<>();
+    for(PostMst o: result){
+      PostListDomain domain = new PostListDomain();
+      domain.setPostId(o.getPostId());
+      domain.setPostTitle(o.getPostTitle());
+      MemberMst memberMst = memberMstRepository.findByUnqUsrId(o.getUnqUsrId()).orElse(null);
+      String usrId = memberMst.getUsrId();
+      domain.setWriter(usrId);
+      domain.setFileId(o.getFileId());
+      String date = o.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+      domain.setDate(date);
+      postList.add(domain);
+    }
 
-    return response.success(result, "게시글리스트 불러오기 성공.",
+    return response.success(postList, "게시글리스트 불러오기 성공.",
         HttpStatus.OK);
   }
 

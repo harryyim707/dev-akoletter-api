@@ -29,6 +29,6 @@ public class GetPostDetailResponse {
 
     private String category;
 
-
+    private String date;
 
 }
