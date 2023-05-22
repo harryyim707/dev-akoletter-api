@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -112,5 +113,12 @@ public class EditorServiceImpl implements EditorService {
     postMstRepository.saveAndFlush(postMst);
     savePostResponse.setSuccess("success");
     return savePostResponse;
+  }
+
+  @Transactional
+  @Override
+  public ResponseEntity<?> saveImage(List<MultipartFile> files) throws Exception{
+    List<FileMst> list = fileService.saveFile(FileMst.builder().build(), files);
+    return response.success(HttpStatus.OK);
   }
 }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class PostServiceImpl implements PostService {
   private final PostMstRepository postMstRepository;
   private final FileMstRepository fileMstRepository;
   private final MemberMstRepository memberMstRepository;
+  @Value("${defaultImageId}")
+  int defaultImageId;
 
 
   @Override
@@ -81,9 +84,18 @@ public class PostServiceImpl implements PostService {
   @Override
   public ResponseEntity<?> showImage(int fileId) throws IOException {
     String absolutePath = new File("").getAbsolutePath();
-    FileMst fileMst = fileMstRepository.findByfileId(fileId).orElse(null);
-    String path = fileMst.getFilePath();
-    String name = fileMst.getFileNm();
+    FileMst defaultImage = fileMstRepository.findByfileId(defaultImageId).orElse(null);
+    FileMst fileMst = fileMstRepository.findByfileId(fileId).orElse(defaultImage);
+    String path = null;
+    String name = null;
+    if(fileMst != null && fileMst.getFilePath()!=null && fileMst.getFileNm() != null){
+      path = fileMst.getFilePath();
+      name = fileMst.getFileNm();
+    }
+    else{
+      path = defaultImage.getFilePath();
+      name = defaultImage.getFileNm();
+    }
     InputStream imageStream = new FileInputStream(absolutePath + "/" + path + "/" + name);
     byte[] image = IOUtils.toByteArray(imageStream);
     GetImageResponse resp = new GetImageResponse();

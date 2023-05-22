@@ -59,4 +59,10 @@ public class EditorController {
     return response.success(res, "저장에 성공했습니다.", HttpStatus.OK);
   }
 
+  @PostMapping("/saveimage")
+  public ResponseEntity<?> saveImageResponseEntity(@RequestPart(value = "files", required = false) List<MultipartFile> files)
+    throws Exception {
+      return editorService.saveImage(files);
+    }
+
 }

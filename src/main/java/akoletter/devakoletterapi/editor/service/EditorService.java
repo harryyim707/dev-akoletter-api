@@ -13,4 +13,6 @@ public interface EditorService {
   ResponseEntity<?> summary(SummaryRequest request) throws JSONException;
 
   SavePostResponse savePost(SavePostRequest request, List<MultipartFile> files) throws Exception;
+
+  ResponseEntity<?> saveImage(List<MultipartFile> files) throws Exception;
 }

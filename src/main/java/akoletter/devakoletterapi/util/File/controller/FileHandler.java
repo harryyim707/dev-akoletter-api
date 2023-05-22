@@ -90,7 +90,7 @@ public class FileHandler {
                 .filePath(path)
                 .fileExt(originalFileExtension)
                 .fileType(originalFileExtension)
-                .refTbl("testtable")
+                .refTbl("post_mst")
                 .build();
                 fileList.add(board);
 
