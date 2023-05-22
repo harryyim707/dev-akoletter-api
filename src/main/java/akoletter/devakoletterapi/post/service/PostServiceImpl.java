@@ -36,11 +36,7 @@ public class PostServiceImpl implements PostService {
     postDetailResponse.setPostTitle(postMst.getPostTitle());
     postDetailResponse.setPostContent(postMst.getPostContent());
     postDetailResponse.setCategory(postMst.getCategory());
-    List<Integer> fileIds = new ArrayList<>();
-    fileIds.add(postMst.getFileId());
-    fileIds.add(postMst.getFileId2());
-    fileIds.add(postMst.getFileId3());
-    postDetailResponse.setFileId(fileIds);
+    postDetailResponse.setFileId(postMst.getFileId());
     return response.success(postDetailResponse, "상세 게시글 불러오기 성공.",
         HttpStatus.OK);
   }
