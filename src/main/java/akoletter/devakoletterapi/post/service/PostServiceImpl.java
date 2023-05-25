@@ -73,7 +73,8 @@ public class PostServiceImpl implements PostService {
       domain.setUsrId(usrId);
       domain.setFileId(o.getFileId());
       String date = o.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-      domain.setDate(date);
+      domain.setCategory(o.getCategory());
+      domain.setFrstRgsDt(date);
       postList.add(domain);
     }
 

@@ -17,5 +17,7 @@ public class PostListDomain {
 
   private int fileId;
 
-  private String date;
+  private String frstRgsDt;
+
+  private String category;
 }
