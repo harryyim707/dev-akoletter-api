@@ -7,6 +7,7 @@ import akoletter.devakoletterapi.post.service.PostService;
 import akoletter.devakoletterapi.util.response.Helper;
 import akoletter.devakoletterapi.util.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,9 +36,9 @@ public class PostController {
     }
 
     @GetMapping("/getpostlist/{category}")
-    public ResponseEntity<?> getPostList(@PathVariable("category") String category) {
+    public ResponseEntity<?> getPostList(@RequestBody @Nullable GetPostListRequest request, @PathVariable("category") String category) {
 
-        return postService.getPostList(category);
+        return postService.getPostList(request, category);
     }
 
     @GetMapping(value = "/images/{fileId}")
