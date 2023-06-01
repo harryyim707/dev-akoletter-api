@@ -6,6 +6,7 @@ import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
 import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
 import akoletter.devakoletterapi.jpa.postmst.entity.PostMst;
 import akoletter.devakoletterapi.jpa.postmst.repo.PostMstRepository;
+import akoletter.devakoletterapi.post.domain.request.GetPostListRequest;
 import akoletter.devakoletterapi.post.domain.response.GetImageResponse;
 import akoletter.devakoletterapi.post.domain.response.GetPostDetailResponse;
 import akoletter.devakoletterapi.post.domain.response.PostListDomain;
@@ -55,12 +56,23 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public ResponseEntity<?> getPostList(String category) {
+  public ResponseEntity<?> getPostList(GetPostListRequest request, String category) {
     List<PostMst> result = new ArrayList<>();
+    List<Long> idList = request.getIdList();
     if (!"all".equals(category)) {
-      result = postMstRepository.findTop12ByCategory(category);
+      if(idList==null){
+        result = postMstRepository.findTop12ByCategory(category);
+      }
+      else{
+        result = postMstRepository.findTop12ByCategoryAndPostIdNotIn(category, idList);
+      }
     } else {
-      result = postMstRepository.findTop12By();
+      if(idList==null){
+        result = postMstRepository.findTop12By();
+      }
+      else{
+        result = postMstRepository.findTop12ByPostIdNotIn(idList);
+      }
     }
     List<PostListDomain> postList = new ArrayList<>();
     for(PostMst o: result){
@@ -73,7 +85,8 @@ public class PostServiceImpl implements PostService {
       domain.setUsrId(usrId);
       domain.setFileId(o.getFileId());
       String date = o.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-      domain.setDate(date);
+      domain.setCategory(o.getCategory());
+      domain.setFrstRgsDt(date);
       postList.add(domain);
     }
 

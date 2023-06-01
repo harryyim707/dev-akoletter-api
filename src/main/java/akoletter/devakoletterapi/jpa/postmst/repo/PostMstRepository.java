@@ -22,4 +22,7 @@ public interface PostMstRepository extends JpaRepository<PostMst, PostMstPk> {
     Boolean existsByPostTitle(String postTitle);
 
 
+  List<PostMst> findTop12ByCategoryAndPostIdNotIn(String category, List<Long> idList);
+
+    List<PostMst> findTop12ByPostIdNotIn(List<Long> idList);
 }
