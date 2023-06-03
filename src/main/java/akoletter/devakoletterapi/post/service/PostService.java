@@ -1,6 +1,5 @@
 package akoletter.devakoletterapi.post.service;
 
-import akoletter.devakoletterapi.post.domain.request.GetPostListRequest;
 import java.io.IOException;
 import org.springframework.http.ResponseEntity;
 
