@@ -9,8 +9,7 @@ public interface PostService {
 
   ResponseEntity<?> getPostDetail(long postId);
 
-  ResponseEntity<?> getPostList(GetPostListRequest request, String category);
+  ResponseEntity<?> getPostList(int size, String category);
 
   ResponseEntity<?> showImage(int fileId) throws IOException;
-
 }

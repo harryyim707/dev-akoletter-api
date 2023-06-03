@@ -6,7 +6,6 @@ import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
 import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
 import akoletter.devakoletterapi.jpa.postmst.entity.PostMst;
 import akoletter.devakoletterapi.jpa.postmst.repo.PostMstRepository;
-import akoletter.devakoletterapi.post.domain.request.GetPostListRequest;
 import akoletter.devakoletterapi.post.domain.response.GetImageResponse;
 import akoletter.devakoletterapi.post.domain.response.GetPostDetailResponse;
 import akoletter.devakoletterapi.post.domain.response.PostListDomain;
@@ -20,7 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -56,26 +58,17 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public ResponseEntity<?> getPostList(GetPostListRequest request, String category) {
-    List<PostMst> result = new ArrayList<>();
-    List<Long> idList = request.getIdList();
+  public ResponseEntity<?> getPostList(int size, String category) {
+    Pageable pageable;
+    pageable = PageRequest.of(0, size, Sort.by("postId").descending());
+    Slice<PostMst> res = null;
     if (!"all".equals(category)) {
-      if(idList==null){
-        result = postMstRepository.findTop12ByCategory(category);
-      }
-      else{
-        result = postMstRepository.findTop12ByCategoryAndPostIdNotIn(category, idList);
-      }
+      res = postMstRepository.findByCategory(category, pageable);
     } else {
-      if(idList==null){
-        result = postMstRepository.findTop12By();
-      }
-      else{
-        result = postMstRepository.findTop12ByPostIdNotIn(idList);
-      }
+      res = postMstRepository.findBy(pageable);
     }
     List<PostListDomain> postList = new ArrayList<>();
-    for(PostMst o: result){
+    for(PostMst o: res.getContent()){
       PostListDomain domain = new PostListDomain();
       domain.setPostId(o.getPostId());
       domain.setPostTitle(o.getPostTitle());
