@@ -4,9 +4,7 @@ import akoletter.devakoletterapi.common.member.domain.request.DeleteAccountReque
 import akoletter.devakoletterapi.common.member.domain.request.LoginRequest;
 import akoletter.devakoletterapi.common.member.domain.request.LogoutRequest;
 import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
-import akoletter.devakoletterapi.common.member.domain.request.TestRequest;
 import akoletter.devakoletterapi.common.member.domain.response.LoginResponse;
-import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
 import akoletter.devakoletterapi.jpa.authority.entity.Authority;
 import akoletter.devakoletterapi.jpa.authority.repo.AuthorityRepository;
 import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
@@ -33,6 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class MemberServiceImpl implements MemberService {
+
   private final Response response;
   private final MemberMstRepository memberMstRepository;
   private final AuthorityRepository authorityRepository;
@@ -49,18 +48,18 @@ public class MemberServiceImpl implements MemberService {
   @Transactional
   public ResponseEntity<?> login(LoginRequest request) {
     MemberMst memberMst = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
-    if(memberMst==null){
+    if (memberMst == null) {
       return response.fail("계정 정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
-    if("N".equals(memberMst.getUseYn())){
+    if ("N".equals(memberMst.getUseYn())) {
       return response.fail("탈퇴한 사용자입니다.", HttpStatus.BAD_REQUEST);
     }
-    if (!passwordEncoder.matches(request.getUsrPwd(), memberMst.getUsrPwd())){
+    if (!passwordEncoder.matches(request.getUsrPwd(), memberMst.getUsrPwd())) {
       return response.fail("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
     TokenDto tokenDto = jwtProvider.createAccessToken(memberMst.getUsrId(), memberMst.getRoles());
     Token refreshToken = validRefreshToken(memberMst, memberMst.getRefreshToken());
-    if(refreshToken == null || refreshToken.getExpiration() <= 0){
+    if (refreshToken == null || refreshToken.getExpiration() <= 0) {
       refreshToken = createRefreshToken(memberMst);
       memberMst.setRefreshToken(refreshToken.getRefreshToken());
     }
@@ -81,48 +80,52 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   @Transactional
-  public MemberMst signUp(SignUpRequest request){
+  public MemberMst signUp(SignUpRequest request) {
     MemberMst memberCheck = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
-    if(memberCheck != null || memberMstRepository.findByUsrEmail(request.getUsrEmail()).orElse(null) != null || memberMstRepository.findByUsrTelNo(request.getUsrTelNo()).orElse(null) != null){
+    if (memberCheck != null
+        || memberMstRepository.findByUsrEmail(request.getUsrEmail()).orElse(null) != null
+        || memberMstRepository.findByUsrTelNo(request.getUsrTelNo()).orElse(null) != null) {
       return null;
     }
+    MemberMst last = memberMstRepository.findTopByOrderByUnqUsrIdDesc().orElse(null);
+    Authority lastAuthority = authorityRepository.findTopByOrderByAuthIdDesc().orElse(null);
+    Long id = 0L;
+    Long authId = 0L;
+    if (last == null) {
+      id = 1L;
+    } else {
+      id = last.getUnqUsrId() + 1;
+    }
     MemberMst memberMst = new MemberMst();
+    memberMst.setUnqUsrId(id);
     memberMst.setUsrId(request.getUsrId());
     memberMst.setUsrPwd(passwordEncoder.encode(request.getUsrPwd()));
     memberMst.setUsrNm(request.getUsrNm());
     memberMst.setUsrEmail(request.getUsrEmail());
     memberMst.setUsrTelNo(request.getUsrTelNo());
     memberMstRepository.saveAndFlush(memberMst);
-    return memberMst;
-  }
-  @Override
-  public ResponseEntity<?> authorityInsert(SignUpRequest request) {
+    if (lastAuthority == null) {
+      authId = 1L;
+    } else {
+      authId = lastAuthority.getAuthId() + 1;
+    }
     Authority authority = new Authority();
-    MemberMst member = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
+    authority.setAuthId(authId);
     authority.setName("ROLE_USER");
-    authority.setMember(member);
+    authority.setMember(memberMst);
     List<Authority> authorities = new ArrayList<>();
     authorities.add(authority);
     authorityRepository.saveAllAndFlush(authorities);
-    member.setRoles(authorities);
-    memberMstRepository.save(member);
-    SignUpResponse results = new SignUpResponse();
-    results.setSuccess("true");
-    return response.success(results, "회원가입이 완료되었습니다.", HttpStatus.OK);
+
+    return memberMst;
   }
-
-
-
   // Refresh Token
 
   /**
-   * Refresh 토큰을 생성한다.
-   * Redis 내부에는
-   * refreshToken:memberId : tokenValue
-   * 형태로 저장한다.
+   * Refresh 토큰을 생성한다. Redis 내부에는 refreshToken:memberId : tokenValue 형태로 저장한다.
    */
 
-  public Token createRefreshToken(MemberMst memberMst){
+  public Token createRefreshToken(MemberMst memberMst) {
     return tokenRepository.save(
         Token.builder()
             .id(memberMst.getUnqUsrId())
@@ -140,26 +143,28 @@ public class MemberServiceImpl implements MemberService {
       return null;
     } else {
       // 리프레시 토큰 만료일자가 얼마 남지 않았을 때 null 반환
-      if(token.getExpiration() < 10) {
+      if (token.getExpiration() < 10) {
         return null;
       }
       // 토큰이 같은지 비교
-      if(!token.getRefreshToken().equals(refreshToken)) {
+      if (!token.getRefreshToken().equals(refreshToken)) {
         return null;
       } else {
         return token;
       }
     }
   }
+
   @Override
   public ResponseEntity<?> refreshAccessToken(TokenDto token) {
     String usrId = jwtProvider.getAccount(token.getAccessToken());
     MemberMst memberMst = memberMstRepository.findByUsrId(usrId).orElse(null);
-    if(memberMst == null){
+    if (memberMst == null) {
       return response.fail("회원정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
     Token refreshToken = validRefreshToken(memberMst, token.getRefreshToken());
-    if (refreshToken == null || !memberMst.getRefreshToken().equals(refreshToken.getRefreshToken())) {
+    if (refreshToken == null || !memberMst.getRefreshToken()
+        .equals(refreshToken.getRefreshToken())) {
       return response.fail("다시 로그인해 주세요.", HttpStatus.BAD_REQUEST);
     }
     TokenDto tokenDto = jwtProvider.createAccessToken(usrId, memberMst.getRoles());
@@ -171,7 +176,7 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public ResponseEntity<?> delete(DeleteAccountRequest request) {
     String usrId = jwtProvider.getAccount(request.getAccessToken());
-    if(usrId == null){
+    if (usrId == null) {
       return response.fail("다시 로그인해 주십시오.", HttpStatus.BAD_REQUEST);
     }
     MemberMst memberMst = memberMstRepository.findByUsrId(usrId).orElse(null);
@@ -180,7 +185,7 @@ public class MemberServiceImpl implements MemberService {
     }
     memberMst.setUseYn("N");
     List<Authority> authorities = memberMst.getRoles();
-    for(Authority authority: authorities){
+    for (Authority authority : authorities) {
       authority.setUseYn("N");
       authority.setName("DELETED");
     }
@@ -195,12 +200,12 @@ public class MemberServiceImpl implements MemberService {
     String usrId = jwtProvider.getAccount(request.getAccessToken());
     MemberMst memberMst = memberMstRepository.findByUsrId(usrId).orElse(null);
     // access token이 유효한지 확인
-    if(!jwtProvider.validateToken(request.getAccessToken()) || usrId == null){
+    if (!jwtProvider.validateToken(request.getAccessToken()) || usrId == null) {
       return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
     }
     // refresh token 존재 여부 확인
     Token refresh = tokenRepository.findById(memberMst.getUnqUsrId()).orElse(null);
-    if(refresh == null){
+    if (refresh == null) {
       return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
     }
     /** refresh token 삭제
@@ -211,7 +216,8 @@ public class MemberServiceImpl implements MemberService {
      */
     tokenRepository.delete(refresh);
     Long expiration = jwtProvider.getExpiration(request.getAccessToken());
-    redisTemplate.opsForValue().set(request.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+    redisTemplate.opsForValue()
+        .set(request.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
     return response.success("로그아웃 되었습니다.");
   }
 

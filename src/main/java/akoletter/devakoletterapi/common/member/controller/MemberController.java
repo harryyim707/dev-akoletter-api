@@ -5,6 +5,7 @@ import akoletter.devakoletterapi.common.member.domain.request.LoginRequest;
 import akoletter.devakoletterapi.common.member.domain.request.LogoutRequest;
 import akoletter.devakoletterapi.common.member.domain.request.SignUpRequest;
 import akoletter.devakoletterapi.common.member.domain.request.TestRequest;
+import akoletter.devakoletterapi.common.member.domain.response.SignUpResponse;
 import akoletter.devakoletterapi.common.member.service.MemberService;
 import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
 import akoletter.devakoletterapi.util.jwt.TokenDto;
@@ -46,7 +47,9 @@ public class MemberController {
     if(member == null){
       return response.fail("이미 존재하는 계정 정보입니다.", HttpStatus.BAD_REQUEST);
     }
-    return memberService.authorityInsert(request);
+    SignUpResponse results = new SignUpResponse();
+    results.setSuccess("true");
+    return response.success(results, "성공했습니다.", HttpStatus.OK);
   }
 
   @PostMapping("/reissue")

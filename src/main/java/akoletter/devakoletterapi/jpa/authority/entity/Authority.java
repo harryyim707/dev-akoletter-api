@@ -38,7 +38,7 @@ public class Authority extends BaseEntity {
   private String name;
 
   @JoinColumn(name = "unq_usr_id", nullable = false)
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JsonIgnore
   private MemberMst member;
 

@@ -14,4 +14,6 @@ public interface MemberMstRepository extends JpaRepository<MemberMst, MemberMstP
   Optional<MemberMst> findByUsrTelNo(String usrTelNo);
 
   Optional<MemberMst> findByUnqUsrId(Long unqUsrId);
+
+  Optional<MemberMst> findTopByOrderByUnqUsrIdDesc();
 }

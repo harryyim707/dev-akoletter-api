@@ -17,6 +17,4 @@ public interface MemberService {
   ResponseEntity<?>  refreshAccessToken(TokenDto token);
 
   ResponseEntity<?> delete(DeleteAccountRequest request);
-
-  ResponseEntity<?> authorityInsert(SignUpRequest request);
 }
