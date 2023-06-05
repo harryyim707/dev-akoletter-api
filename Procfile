@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS -jar ./target/devAkoletterApi.jar
+web: java --server.port=$PORT --spring.profiles.active=prod $JAVA_OPTS -jar ./target/devAkoletterApi.jar
