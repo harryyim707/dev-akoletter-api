@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -35,8 +36,8 @@ public class PostServiceImpl implements PostService {
   private final PostMstRepository postMstRepository;
   private final FileMstRepository fileMstRepository;
   private final MemberMstRepository memberMstRepository;
-  /*@Value("${defaultImageId}")*/
-  int defaultImageId=1111;
+  @Value("${defaultImageId}")
+  int defaultImageId;
 
 
   @Override
