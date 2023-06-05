@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +20,7 @@ public class FileServiceImpl implements FileService {
     @Autowired
     public FileServiceImpl(FileMstRepository fileMstRepository) {
         this.fileMstRepository = fileMstRepository;
-        this.fileHandler = new FileHandler(); //생성자
+        this.fileHandler = new FileHandler(fileMstRepository); //생성자
     }
     //저장해주는 메소드
     public List<FileMst> saveFile(
@@ -31,23 +29,28 @@ public class FileServiceImpl implements FileService {
     ) throws Exception {
         // 파일을 저장하고 그 Board 에 대한 list 를 가지고 있는다
 
-        List<FileMst> list = fileHandler.parseFileInfo(board.getFileId(), files);
+        FileMst last = fileMstRepository.findTopByOrderByFileIdDesc().orElse(null);
+        int fileId = 1;
+        if(last != null){
+            fileId = last.getFileId()+1;
+        }
+        List<FileMst> list = fileHandler.parseFileInfo(fileId, files);
         int size = list.size();
         int index = 0;
-        if (list.isEmpty()){
-            return null;
-        }
-        // 파일에 대해 DB에 저장하고 가지고 있을 것
-        else{
-            while (size>0) {
-                FileMst pictureBeans = list.get(index);
-                fileMstRepository.saveAndFlush(pictureBeans);
-                size--;
-                index++;
-                pictureBeans.getFileId();
-            }
-
-        }
+//        if (list.isEmpty()){
+//            return null;
+//        }
+//        // 파일에 대해 DB에 저장하고 가지고 있을 것
+//        else{
+////            while (size>0) {
+////                FileMst pictureBeans = list.get(index);
+////                fileMstRepository.saveAndFlush(pictureBeans);
+////                size--;
+////                index++;
+////                pictureBeans.getFileId();
+////            }
+////            fileMstRepository.saveAllAndFlush(list);
+//        }
         return list;
     }
 

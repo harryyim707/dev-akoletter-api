@@ -99,6 +99,12 @@ public class EditorServiceImpl implements EditorService {
       savePostResponse.setSuccess("exists");
       return savePostResponse;
     }
+    PostMst last = postMstRepository.findTopByOrderByPostIdDesc().orElse(null);
+    Long postId = 1L;
+    if (last != null) {
+      postId = last.getPostId() + 1;
+    }
+    postMst.setPostId(postId);
     postMst.setPostContent(request.getPostContent());
     postMst.setPostTitle(request.getPostTitle());
     postMst.setUnqUsrId(unqUsrId);
@@ -117,7 +123,7 @@ public class EditorServiceImpl implements EditorService {
 
   @Transactional
   @Override
-  public ResponseEntity<?> saveImage(List<MultipartFile> files) throws Exception{
+  public ResponseEntity<?> saveImage(List<MultipartFile> files) throws Exception {
     List<FileMst> list = fileService.saveFile(FileMst.builder().build(), files);
     return response.success(HttpStatus.OK);
   }

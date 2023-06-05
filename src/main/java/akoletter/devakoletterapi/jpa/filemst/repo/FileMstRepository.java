@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface FileMstRepository extends JpaRepository<FileMst, FileMstPk> {
-    Optional<FileMst> findByfileId(int fileId);
+
+  Optional<FileMst> findByfileId(int fileId);
+
+  Optional<FileMst> findTopByOrderByFileIdDesc();
 }

@@ -89,11 +89,9 @@ public class MemberServiceImpl implements MemberService {
     }
     MemberMst last = memberMstRepository.findTopByOrderByUnqUsrIdDesc().orElse(null);
     Authority lastAuthority = authorityRepository.findTopByOrderByAuthIdDesc().orElse(null);
-    Long id = 0L;
-    Long authId = 0L;
-    if (last == null) {
-      id = 1L;
-    } else {
+    Long id = 1L;
+    Long authId = 1L;
+    if (last != null) {
       id = last.getUnqUsrId() + 1;
     }
     MemberMst memberMst = new MemberMst();
@@ -104,9 +102,7 @@ public class MemberServiceImpl implements MemberService {
     memberMst.setUsrEmail(request.getUsrEmail());
     memberMst.setUsrTelNo(request.getUsrTelNo());
     memberMstRepository.saveAndFlush(memberMst);
-    if (lastAuthority == null) {
-      authId = 1L;
-    } else {
+    if (lastAuthority != null) {
       authId = lastAuthority.getAuthId() + 1;
     }
     Authority authority = new Authority();

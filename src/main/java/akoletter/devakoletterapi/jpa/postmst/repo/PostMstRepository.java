@@ -13,8 +13,6 @@ public interface PostMstRepository extends JpaRepository<PostMst, PostMstPk> {
 
   Slice<PostMst> findBy(Pageable pageable);
 
-  List<PostMst> findTop12ByCategory(String category);
-
   Optional<PostMst> findByPostId(Long postId);
 
   Optional<PostMst> findByPostTitleAndUnqUsrId(String postTitle, Long unqUsrId);
@@ -22,4 +20,6 @@ public interface PostMstRepository extends JpaRepository<PostMst, PostMstPk> {
   Boolean existsByPostTitle(String postTitle);
 
   Slice<PostMst> findByCategory(String category, Pageable pageable);
+
+  Optional<PostMst> findTopByOrderByPostIdDesc();
 }

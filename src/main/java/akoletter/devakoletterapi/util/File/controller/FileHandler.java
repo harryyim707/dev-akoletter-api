@@ -16,6 +16,11 @@ import java.util.List;
 @Component
 public class FileHandler {
 
+    private final FileMstRepository fileMstRepository;
+
+    public FileHandler(FileMstRepository fileMstRepository) {
+        this.fileMstRepository = fileMstRepository;
+    }
 
     public List<FileMst>  parseFileInfo(
             int fileId,
@@ -25,7 +30,7 @@ public class FileHandler {
 
         // 반환을 할 파일 리스트
         List<FileMst> fileList = new ArrayList<>();
-
+        int id = fileId;
         // 일이 빈 것이 들어오면 빈 것을 반환
         if (multipartFiles.isEmpty()) {
             return fileList;
@@ -82,18 +87,18 @@ public class FileHandler {
 
                 // 생성 후 리스트에 추가
 
-                FileMst board = FileMst.builder()
-                .fileId(fileId)
-                .fileNm(new_file_name)
-                .orgFileNm(multipartFile.getOriginalFilename())
-                .fileSize(multipartFile.getSize())
-                .filePath(path)
-                .fileExt(originalFileExtension)
-                .fileType(originalFileExtension)
-                .refTbl("post_mst")
-                .build();
-                fileList.add(board);
+                FileMst board = new FileMst();
+                board.setFileId(id);
+                board.setFileNm(new_file_name);
+                board.setOrgFileNm(multipartFile.getOriginalFilename());
+                board.setFileSize(multipartFile.getSize());
+                board.setFilePath(path);
+                board.setFileExt(originalFileExtension);
+                board.setFileType(originalFileExtension);
+                board.setRefTbl("post_mst");
 
+                fileList.add(board);
+                id++;
 
                 // 저장된 파일로 변경하여 이를 보여주기 위함
                 file = new File(absolutePath + path + "/" + new_file_name);
@@ -102,7 +107,7 @@ public class FileHandler {
 
             }
         }
-
+        fileMstRepository.saveAllAndFlush(fileList);
         return fileList;
     }
 
