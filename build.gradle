@@ -72,6 +72,10 @@ bootJar{
 	archiveFileName = 'devAkoletterApi.jar'
 	archiveVersion = "0.0.1"
 }
+bootRun{
+	String activeProfile = System.properties['spring.profiles.active']
+	systemProperty "spring.profiles.active", activeProfile
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
