@@ -20,6 +20,51 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '17'
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "AKOLETTER_DB_PW=$AKOLETTER_DB_PW">>.env
+          echo "AKOLETTER_DB_URL=$AKOLETTER_DB_URL">>.env
+          echo "AZURE_MYSQL_CONNECTIONSTRING=$AZURE_MYSQL_CONNECTIONSTRING">>.env
+          echo "AZURE_REDIS_CONNECTIONSTRING=$AZURE_REDIS_CONNECTIONSTRING">>.env
+          echo "CLOVA_API_URL=$CLOVA_API_URL">>.env
+          echo "CLOVA_CLIENT_ID=$CLOVA_CLIENT_ID">>.env
+          echo "CLOVA_CLIENT_SECRET=$CLOVA_CLIENT_SECRET">>.env
+          echo "CUSTOMCONNSTR_CLOVA_API_URL=$CUSTOMCONNSTR_CLOVA_API_URL">>.env
+          echo "CUSTOMCONNSTR_CLOVA_CLIENT_ID=$CUSTOMCONNSTR_CLOVA_CLIENT_ID">>.env
+          echo "CUSTOMCONNSTR_CLOVA_CLIENT_SECRET=$CUSTOMCONNSTR_CLOVA_CLIENT_SECRET">>.env
+          echo "CUSTOMCONNSTR_DEFAULTIMAGEID=$CUSTOMCONNSTR_DEFAULTIMAGEID">>.env
+          echo "CUSTOMCONNSTR_JWT_SECRET_KEY=$CUSTOMCONNSTR_JWT_SECRET_KEY">>.env
+          echo "CUSTOMCONNSTR_PORT=$CUSTOMCONNSTR_PORT">>.env
+          echo "DB_PW=$DB_PW">>.env
+          echo "DB_USERNAME=$DB_USERNAME">>.env
+          echo "DEFAULTIMAGEID=$DEFAULTIMAGEID">>.env
+          echo "JWT_SECRET_KEY=$JWT_SECRET_KEY">>.env
+          echo "LOCAL_REDIS_HOST=$LOCAL_REDIS_HOST">>.env
+          echo "LOCAL_REDIS_PORT=$LOCAL_REDIS_PORT">>.env
+          echo "MYSQL_PASSWORD=$MYSQL_PASSWORD">>.env
+          echo "PORT=$PORT">>.env
+        env:
+          AKOLETTER_DB_PW: ${{ secrets.AKOLETTER_DB_PW }}
+          AKOLETTER_DB_URL: ${{ secrets.AKOLETTER_DB_URL }}
+          AZURE_MYSQL_CONNECTIONSTRING: ${{ secrets.AZURE_MYSQL_CONNECTIONSTRING }}
+          AZURE_REDIS_CONNECTIONSTRING: ${{ secrets.AZURE_REDIS_CONNECTIONSTRING }}
+          CLOVA_API_URL: ${{ secrets.CLOVA_API_URL }}
+          CLOVA_CLIENT_ID: ${{ secrets.CLOVA_CLIENT_ID }}
+          CLOVA_CLIENT_SECRET: ${{ secrets.CLOVA_CLIENT_SECRET }}
+          CUSTOMCONNSTR_CLOVA_API_URL: ${{ secrets.CUSTOMCONNSTR_CLOVA_API_URL }}
+          CUSTOMCONNSTR_CLOVA_CLIENT_ID: ${{ secrets.CUSTOMCONNSTR_CLOVA_CLIENT_ID }}
+          CUSTOMCONNSTR_CLOVA_CLIENT_SECRET: ${{ secrets.CUSTOMCONNSTR_CLOVA_CLIENT_SECRET }}
+          CUSTOMCONNSTR_DEFAULTIMAGEID: ${{ secrets.CUSTOMCONNSTR_DEFAULTIMAGEID }}
+          CUSTOMCONNSTR_JWT_SECRET_KEY: ${{ secrets.CUSTOMCONNSTR_JWT_SECRET_KEY }}
+          CUSTOMCONNSTR_PORT: ${{ secrets.CUSTOMCONNSTR_PORT }}
+          DB_PW: ${{ secrets.DB_PW }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DEFAULTIMAGEID: ${{ secrets.DEFAULTIMAGEID }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          LOCAL_REDIS_HOST: ${{ secrets.LOCAL_REDIS_HOST }}
+          LOCAL_REDIS_PORT: ${{ secrets.LOCAL_REDIS_PORT }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          PORT: ${{ secrets.PORT }}
 
       - name: Setup MySQL
         uses: samin/mysql-action@v1
