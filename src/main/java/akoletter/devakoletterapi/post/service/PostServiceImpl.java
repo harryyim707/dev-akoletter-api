@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService {
   private final PostMstRepository postMstRepository;
   private final FileMstRepository fileMstRepository;
   private final MemberMstRepository memberMstRepository;
-  @Value("${CUSTOMCONNSTR_defaultImageId}")
+  @Value("${defaultImageId}")
   int defaultImageId;
 
 
