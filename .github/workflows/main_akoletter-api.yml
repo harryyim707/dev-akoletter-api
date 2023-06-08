@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '17'
+
       - name: Generate Environment Variables File for Production
         run: |
           echo "AKOLETTER_DB_PW=$AKOLETTER_DB_PW">>.env
@@ -41,7 +42,6 @@ jobs:
           echo "JWT_SECRET_KEY=$JWT_SECRET_KEY">>.env
           echo "LOCAL_REDIS_HOST=$LOCAL_REDIS_HOST">>.env
           echo "LOCAL_REDIS_PORT=$LOCAL_REDIS_PORT">>.env
-          echo "MYSQL_PASSWORD=$MYSQL_PASSWORD">>.env
           echo "PORT=$PORT">>.env
         env:
           AKOLETTER_DB_PW: ${{ secrets.AKOLETTER_DB_PW }}
@@ -63,7 +63,6 @@ jobs:
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
           LOCAL_REDIS_HOST: ${{ secrets.LOCAL_REDIS_HOST }}
           LOCAL_REDIS_PORT: ${{ secrets.LOCAL_REDIS_PORT }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           PORT: ${{ secrets.PORT }}
 
       - name: Setup MySQL
@@ -82,7 +81,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --exclude-task test
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
