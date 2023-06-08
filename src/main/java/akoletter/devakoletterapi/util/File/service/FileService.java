@@ -8,5 +8,4 @@ import java.util.Optional;
 
 public interface FileService {
     List<FileMst> saveFile(FileMst board, List<MultipartFile> files) throws Exception;
-    List<FileMst> findFiles();
 }

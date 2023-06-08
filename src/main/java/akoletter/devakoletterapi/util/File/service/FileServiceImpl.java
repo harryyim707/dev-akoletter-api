@@ -35,26 +35,6 @@ public class FileServiceImpl implements FileService {
             fileId = last.getFileId()+1;
         }
         List<FileMst> list = fileHandler.parseFileInfo(fileId, files);
-        int size = list.size();
-        int index = 0;
-//        if (list.isEmpty()){
-//            return null;
-//        }
-//        // 파일에 대해 DB에 저장하고 가지고 있을 것
-//        else{
-////            while (size>0) {
-////                FileMst pictureBeans = list.get(index);
-////                fileMstRepository.saveAndFlush(pictureBeans);
-////                size--;
-////                index++;
-////                pictureBeans.getFileId();
-////            }
-////            fileMstRepository.saveAllAndFlush(list);
-//        }
         return list;
-    }
-
-    public List<FileMst> findFiles() {
-        return fileMstRepository.findAll();
     }
 }

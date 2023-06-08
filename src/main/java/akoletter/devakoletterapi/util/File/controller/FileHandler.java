@@ -46,7 +46,7 @@ public class FileHandler {
         }
 
         // 프로젝트 폴더에 저장하기 위해 절대경로를 설정 (Window 의 Tomcat 은 Temp 파일을 이용한다)
-        String absolutePath = new File("").getAbsolutePath() + "/";
+        String absolutePath = new File("").getAbsolutePath() + "/home/site/wwwroot/";
 
         // 경로를 지정하고 그곳에다가 저장
         String path = "images/" + current_date;
@@ -103,8 +103,6 @@ public class FileHandler {
                 // 저장된 파일로 변경하여 이를 보여주기 위함
                 file = new File(absolutePath + path + "/" + new_file_name);
                 multipartFile.transferTo(file);
-              /*  fileId++;*/
-
             }
         }
         fileMstRepository.saveAllAndFlush(fileList);
