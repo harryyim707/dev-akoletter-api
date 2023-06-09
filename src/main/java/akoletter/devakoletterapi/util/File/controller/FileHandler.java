@@ -10,21 +10,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
+@RequiredArgsConstructor
 public class FileHandler {
     @Value("${storage.connstr}")
     private String constr;
 
     private final FileMstRepository fileMstRepository;
-
-    public FileHandler(FileMstRepository fileMstRepository) {
-        this.fileMstRepository = fileMstRepository;
-    }
     private BlobContainerClient containerClient(){
         return new BlobContainerClientBuilder()
             .connectionString(constr)

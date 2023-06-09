@@ -15,12 +15,6 @@ public class FileServiceImpl implements FileService {
 
     private final FileMstRepository fileMstRepository;
     private final FileHandler fileHandler;
-    
-    @Autowired
-    public FileServiceImpl(FileMstRepository fileMstRepository) {
-        this.fileMstRepository = fileMstRepository;
-        this.fileHandler = new FileHandler(fileMstRepository); //생성자
-    }
     //저장해주는 메소드
     public List<FileMst> saveFile(
             FileMst board,
