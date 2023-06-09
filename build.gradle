@@ -75,8 +75,10 @@ dependencies {
     //자바 역직렬화 문제 해결 패키지
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
-	// https://mvnrepository.com/artifact/com.azure.spring/spring-cloud-azure-starter-storage-blob
-    implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-storage-blob', version: '5.2.0'
+    // https://mvnrepository.com/artifact/com.azure.spring/spring-cloud-azure-starter-storage-blob
+    implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-storage-blob', version: '5.0.0'
+
+
 
 }
 bootJar {
