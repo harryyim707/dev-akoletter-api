@@ -2,7 +2,11 @@ package akoletter.devakoletterapi.util.File.controller;
 
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
 import akoletter.devakoletterapi.jpa.filemst.repo.FileMstRepository;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +24,20 @@ public class FileHandler {
 
     public FileHandler(FileMstRepository fileMstRepository) {
         this.fileMstRepository = fileMstRepository;
+    }
+    @Value("${CONTAINER_NAME}")
+    String containerName;
+    @Value("${STORAGE_KEY}")
+    String storageKey;
+    String constr = "AccountName="+containerName+";"
+        + "AccountKey="+storageKey+";"
+        + "EndpointSuffix=core.windows.net;"
+        + "DefaultEndpointsProtocol=https;";
+    private BlobContainerClient containerClient(){
+        return new BlobContainerClientBuilder()
+            .connectionString(constr)
+            .containerName("akoletterimages")
+            .buildClient();
     }
 
     public List<FileMst>  parseFileInfo(
@@ -46,7 +64,7 @@ public class FileHandler {
         }
 
         // 프로젝트 폴더에 저장하기 위해 절대경로를 설정 (Window 의 Tomcat 은 Temp 파일을 이용한다)
-        String absolutePath = new File("/akoletter").getAbsolutePath() + "/";
+//        String absolutePath = new File("/akoletter").getAbsolutePath() + "/";
 
         // 경로를 지정하고 그곳에다가 저장
         String path = "images/" + current_date;
@@ -82,11 +100,12 @@ public class FileHandler {
                         break;
                     }
                 }
+                BlobClient client = containerClient().getBlobClient(multipartFile.getOriginalFilename());
+                client.upload(multipartFile.getInputStream(), multipartFile.getSize(), true);
                 // 각 이름은 겹치면 안되므로 나노 초까지 동원하여 지정
                 String new_file_name = System.nanoTime() + originalFileExtension;
 
                 // 생성 후 리스트에 추가
-
                 FileMst board = new FileMst();
                 board.setFileId(id);
                 board.setFileNm(new_file_name);
@@ -101,8 +120,9 @@ public class FileHandler {
                 id++;
 
                 // 저장된 파일로 변경하여 이를 보여주기 위함
-                file = new File(absolutePath + path + "/" + new_file_name);
-                multipartFile.transferTo(file);
+//                file = new File(absolutePath + path + "/" + new_file_name);
+//                multipartFile.transferTo(file);
+
             }
         }
         fileMstRepository.saveAllAndFlush(fileList);

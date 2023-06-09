@@ -3,8 +3,12 @@ package akoletter.devakoletterapi.util.File.service;
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
 import akoletter.devakoletterapi.jpa.filemst.repo.FileMstRepository;
 import akoletter.devakoletterapi.util.File.controller.FileHandler;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -125,6 +125,6 @@ public class EditorServiceImpl implements EditorService {
   @Override
   public ResponseEntity<?> saveImage(List<MultipartFile> files) throws Exception {
     List<FileMst> list = fileService.saveFile(FileMst.builder().build(), files);
-    return response.success(HttpStatus.OK);
+    return response.success(list, "image has been saved!",HttpStatus.OK);
   }
 }
