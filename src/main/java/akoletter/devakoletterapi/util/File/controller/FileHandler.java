@@ -5,17 +5,15 @@ import akoletter.devakoletterapi.jpa.filemst.repo.FileMstRepository;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileHandler {
@@ -25,14 +23,8 @@ public class FileHandler {
     public FileHandler(FileMstRepository fileMstRepository) {
         this.fileMstRepository = fileMstRepository;
     }
-    @Value("${CONTAINER_NAME}")
-    String containerName;
-    @Value("${STORAGE_KEY}")
-    String storageKey;
-    String constr = "AccountName="+containerName+";"
-        + "AccountKey="+storageKey+";"
-        + "EndpointSuffix=core.windows.net;"
-        + "DefaultEndpointsProtocol=https;";
+    @Value("${STORAGE_CONNECTION_STR}")
+    String constr;
     private BlobContainerClient containerClient(){
         return new BlobContainerClientBuilder()
             .connectionString(constr)
