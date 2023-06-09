@@ -13,21 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileServiceImpl implements FileService {
 
-    private final FileMstRepository fileMstRepository;
-    private final FileHandler fileHandler;
-    //저장해주는 메소드
-    public List<FileMst> saveFile(
-            FileMst board,
-            List<MultipartFile> files
-    ) throws Exception {
-        // 파일을 저장하고 그 Board 에 대한 list 를 가지고 있는다
+  private final FileMstRepository fileMstRepository;
+  private final FileHandler fileHandler;
 
-        FileMst last = fileMstRepository.findTopByOrderByFileIdDesc().orElse(null);
-        int fileId = 1;
-        if(last != null){
-            fileId = last.getFileId()+1;
-        }
-        List<FileMst> list = fileHandler.parseFileInfo(fileId, files);
-        return list;
+  //저장해주는 메소드
+  public List<FileMst> saveFile(List<MultipartFile> files
+  ) throws Exception {
+    // 파일을 저장하고 그 Board 에 대한 list 를 가지고 있는다
+
+    FileMst last = fileMstRepository.findTopByOrderByFileIdDesc().orElse(null);
+    int fileId = 1;
+    if (last != null) {
+      fileId = last.getFileId() + 1;
     }
+    List<FileMst> list = fileHandler.parseFileInfo(fileId, files);
+    return list;
+  }
 }
