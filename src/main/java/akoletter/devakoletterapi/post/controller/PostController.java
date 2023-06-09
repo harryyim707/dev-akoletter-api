@@ -1,9 +1,7 @@
 package akoletter.devakoletterapi.post.controller;
 
 import akoletter.devakoletterapi.post.service.PostService;
-import akoletter.devakoletterapi.util.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,25 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class PostController {
 
-    private final PostService postService;
-    private final Response response;
+  private final PostService postService;
 
+  @GetMapping("/getpost/{id}")
+  public ResponseEntity<?> getPostDetail(@PathVariable("id") long postId) {
 
-    @GetMapping("/getpost/{id}")
-    public ResponseEntity<?> getPostDetail(@PathVariable("id") long postId) {
+    return postService.getPostDetail(postId);
+  }
 
-        return postService.getPostDetail(postId);
-    }
+  @GetMapping("/getpostlist")
+  public ResponseEntity<?> getPostList(@RequestParam int size, @RequestParam String category) {
 
-    @GetMapping("/getpostlist")
-    public ResponseEntity<?> getPostList(@RequestParam int size, @RequestParam String category) {
+    return postService.getPostList(size, category);
+  }
 
-        return postService.getPostList(size, category);
-    }
-
-    @GetMapping(value = "/images/{fileId}")
-    public ResponseEntity<?> showImage(@PathVariable("fileId") int fileId) throws IOException{
-       
-        return postService.showImage(fileId);
-    }
+  @GetMapping(value = "/images/{fileId}")
+  public ResponseEntity<?> showImage(@PathVariable("fileId") int fileId) throws IOException {
+    return postService.showImage(fileId);
+  }
 }

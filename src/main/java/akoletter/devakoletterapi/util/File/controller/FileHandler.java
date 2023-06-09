@@ -4,31 +4,23 @@ import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
 import akoletter.devakoletterapi.jpa.filemst.repo.FileMstRepository;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
 public class FileHandler {
-    @Value("${storage.connstr}")
-    private String constr;
 
     private final FileMstRepository fileMstRepository;
-    private BlobContainerClient containerClient(){
-        return new BlobContainerClientBuilder()
-            .connectionString(constr)
-            .containerName("akoletterimages")
-            .buildClient();
-    }
+    @Autowired
+    BlobContainerClient blobContainerClient;
 
     public List<FileMst>  parseFileInfo(
             int fileId,
@@ -53,17 +45,8 @@ public class FileHandler {
             return fileList;
         }
 
-        // 프로젝트 폴더에 저장하기 위해 절대경로를 설정 (Window 의 Tomcat 은 Temp 파일을 이용한다)
-//        String absolutePath = new File("/akoletter").getAbsolutePath() + "/";
-
         // 경로를 지정하고 그곳에다가 저장
-        String path = "images/" + current_date;
-        File file = new File(path);
-        // 저장할 위치의 디렉토리가 존지하지 않을 경우
-        if (!file.exists()) {
-            // mkdir() 함수와 다른 점은 상위 디렉토리가 존재하지 않을 때 그것까지 생성
-            file.mkdirs();
-        }
+        String path = "azure-blob://akoletterimages/";
 
         // 파일 직접다루는 코드
         for (MultipartFile multipartFile : multipartFiles) {
@@ -90,10 +73,10 @@ public class FileHandler {
                         break;
                     }
                 }
-                BlobClient client = containerClient().getBlobClient(multipartFile.getOriginalFilename());
-                client.upload(multipartFile.getInputStream(), multipartFile.getSize(), true);
                 // 각 이름은 겹치면 안되므로 나노 초까지 동원하여 지정
                 String new_file_name = System.nanoTime() + originalFileExtension;
+                BlobClient client = blobContainerClient.getBlobClient(new_file_name);
+                client.upload(multipartFile.getInputStream(), multipartFile.getSize(), false);
 
                 // 생성 후 리스트에 추가
                 FileMst board = new FileMst();
@@ -108,11 +91,6 @@ public class FileHandler {
 
                 fileList.add(board);
                 id++;
-
-                // 저장된 파일로 변경하여 이를 보여주기 위함
-//                file = new File(absolutePath + path + "/" + new_file_name);
-//                multipartFile.transferTo(file);
-
             }
         }
         fileMstRepository.saveAllAndFlush(fileList);

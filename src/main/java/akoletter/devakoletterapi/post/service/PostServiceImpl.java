@@ -10,6 +10,9 @@ import akoletter.devakoletterapi.post.domain.response.GetImageResponse;
 import akoletter.devakoletterapi.post.domain.response.GetPostDetailResponse;
 import akoletter.devakoletterapi.post.domain.response.PostListDomain;
 import akoletter.devakoletterapi.util.response.Response;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +42,8 @@ public class PostServiceImpl implements PostService {
   private final MemberMstRepository memberMstRepository;
   @Value("${img.defaultid}")
   int defaultImageId;
+  @Autowired
+  BlobContainerClient blobContainerClient;
 
 
   @Override
@@ -90,24 +96,19 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public ResponseEntity<?> showImage(int fileId) throws IOException {
-    String absolutePath = new File("").getAbsolutePath();
     FileMst defaultImage = fileMstRepository.findByfileId(defaultImageId).orElse(null);
     FileMst fileMst = fileMstRepository.findByfileId(fileId).orElse(defaultImage);
-    String path = null;
-    String name = null;
-    if(fileMst != null && fileMst.getFilePath()!=null && fileMst.getFileNm() != null){
-      path = fileMst.getFilePath();
+    String name = defaultImage.getFileNm();
+    if(fileMst.getFileNm() != null){
       name = fileMst.getFileNm();
     }
-    else{
-      path = defaultImage.getFilePath();
-      name = defaultImage.getFileNm();
-    }
-    InputStream imageStream = new FileInputStream(absolutePath + "/" + path + "/" + name);
-    byte[] image = IOUtils.toByteArray(imageStream);
+    BlobClient blob = blobContainerClient.getBlobClient(name);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    blob.downloadStream(outputStream);
+    byte[] image = outputStream.toByteArray();
     GetImageResponse resp = new GetImageResponse();
     resp.setImage(image);
-    imageStream.close();
+    outputStream.close();
     return response.success(resp, "파일 불러오기 성공", HttpStatus.OK);
   }
 
