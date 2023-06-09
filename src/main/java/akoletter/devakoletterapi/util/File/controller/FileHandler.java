@@ -17,14 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileHandler {
+    @Value("${storage.connstr}")
+    private String constr;
 
     private final FileMstRepository fileMstRepository;
 
     public FileHandler(FileMstRepository fileMstRepository) {
         this.fileMstRepository = fileMstRepository;
     }
-    @Value("${STORAGE_CONNECTION_STR}")
-    String constr;
     private BlobContainerClient containerClient(){
         return new BlobContainerClientBuilder()
             .connectionString(constr)
