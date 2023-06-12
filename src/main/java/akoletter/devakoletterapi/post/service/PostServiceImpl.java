@@ -1,11 +1,13 @@
 package akoletter.devakoletterapi.post.service;
 
+import akoletter.devakoletterapi.jpa.authority.entity.Authority;
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
 import akoletter.devakoletterapi.jpa.filemst.repo.FileMstRepository;
 import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
 import akoletter.devakoletterapi.jpa.membermst.repo.MemberMstRepository;
 import akoletter.devakoletterapi.jpa.postmst.entity.PostMst;
 import akoletter.devakoletterapi.jpa.postmst.repo.PostMstRepository;
+import akoletter.devakoletterapi.post.domain.request.DeletePostRequest;
 import akoletter.devakoletterapi.post.domain.response.GetImageResponse;
 import akoletter.devakoletterapi.post.domain.response.GetPostDetailResponse;
 import akoletter.devakoletterapi.post.domain.response.PostListDomain;
@@ -40,8 +42,8 @@ public class PostServiceImpl implements PostService {
   private final PostMstRepository postMstRepository;
   private final FileMstRepository fileMstRepository;
   private final MemberMstRepository memberMstRepository;
-  @Value("${img.defaultid}")
-  int defaultImageId;
+/*  @Value("${img.defaultid}")*/
+  int defaultImageId=1111;
   @Autowired
   BlobContainerClient blobContainerClient;
 
@@ -112,4 +114,11 @@ public class PostServiceImpl implements PostService {
     return response.success(resp, "파일 불러오기 성공", HttpStatus.OK);
   }
 
+  @Override
+  public  ResponseEntity<?> deletePost(DeletePostRequest request){
+    PostMst postMst = postMstRepository.findByPostId(request.getPostId()).orElse(null);
+    postMst.setUseYn("N");
+    postMstRepository.save(postMst);
+    return response.success("게시글 삭제가 완료되었습니다.");
+  }
 }
