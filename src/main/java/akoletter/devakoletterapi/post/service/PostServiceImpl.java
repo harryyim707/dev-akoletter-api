@@ -42,8 +42,8 @@ public class PostServiceImpl implements PostService {
   private final PostMstRepository postMstRepository;
   private final FileMstRepository fileMstRepository;
   private final MemberMstRepository memberMstRepository;
-/*  @Value("${img.defaultid}")*/
-  int defaultImageId=1111;
+  @Value("${img.defaultid}")
+  int defaultImageId;
   @Autowired
   BlobContainerClient blobContainerClient;
 
