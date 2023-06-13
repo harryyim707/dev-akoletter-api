@@ -14,7 +14,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("file:///C:/Users/1/IdeaProjects/img_test/");
     }
-
+    @Override
+    public void addCorsMappings(final CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000","https://nojaewon.github.io/")
+                .allowedMethods("GET", "POST","DELETE")
+                .maxAge(3000);
+    }
 /*    public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "https://nojaewon.github.io/")
