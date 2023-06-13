@@ -53,6 +53,8 @@ public class PostServiceImpl implements PostService {
   @Override
   public ResponseEntity<?> getPostDetail(long postId) {
     PostMst postMst = postMstRepository.findByPostId(postId).orElse(null);
+
+    if(postMst.getUseYn().equals("Y")){
     GetPostDetailResponse postDetailResponse = new GetPostDetailResponse();
     postDetailResponse.setPostId(postMst.getPostId());
     postDetailResponse.setPostTitle(postMst.getPostTitle());
@@ -67,6 +69,10 @@ public class PostServiceImpl implements PostService {
     postDetailResponse.setFileId(postMst.getFileId());
     return response.success(postDetailResponse, "상세 게시글 불러오기 성공.",
         HttpStatus.OK);
+    }
+    else{
+      return response.fail("삭제된 게시글입니다.",HttpStatus.NOT_FOUND);
+    }
   }
 
   @Override
@@ -82,6 +88,7 @@ public class PostServiceImpl implements PostService {
     List<PostListDomain> postList = new ArrayList<>();
     for(PostMst o: res.getContent()){
       PostListDomain domain = new PostListDomain();
+      if(o.getUseYn().equals("Y")){
       domain.setPostId(o.getPostId());
       domain.setPostTitle(o.getPostTitle());
       MemberMst memberMst = memberMstRepository.findByUnqUsrId(o.getUnqUsrId()).orElse(null);
@@ -92,9 +99,8 @@ public class PostServiceImpl implements PostService {
       String date = o.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
       domain.setCategory(o.getCategory());
       domain.setFrstRgsDt(date);
-      postList.add(domain);
+      postList.add(domain);}
     }
-
     return response.success(postList, "게시글리스트 불러오기 성공.",
         HttpStatus.OK);
   }
