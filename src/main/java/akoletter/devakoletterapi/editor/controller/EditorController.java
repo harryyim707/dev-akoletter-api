@@ -54,8 +54,8 @@ public class EditorController {
       return response.fail("이미 존재하는 제목입니다.", HttpStatus.BAD_REQUEST);
     }
     MemberMst member = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
-    PostMst res = postMstRepository.findByPostTitleAndUnqUsrId(request.getPostTitle(),
-        member.getUnqUsrId()).orElse(null);
+    PostMst res = postMstRepository.findByPostTitleAndUnqUsrIdAndUseYn(request.getPostTitle(),
+        member.getUnqUsrId(), "Y").orElse(null);
     return response.success(res, "저장에 성공했습니다.", HttpStatus.OK);
   }
 

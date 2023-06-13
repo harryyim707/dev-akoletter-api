@@ -11,15 +11,15 @@ import java.util.Optional;
 
 public interface PostMstRepository extends JpaRepository<PostMst, PostMstPk> {
 
-  Slice<PostMst> findBy(Pageable pageable);
+  Slice<PostMst> findByUseYn(Pageable pageable, String useYn);
 
-  Optional<PostMst> findByPostId(Long postId);
+  Optional<PostMst> findByPostIdAndUseYn(Long postId, String useYn);
 
-  Optional<PostMst> findByPostTitleAndUnqUsrId(String postTitle, Long unqUsrId);
+  Optional<PostMst> findByPostTitleAndUnqUsrIdAndUseYn(String postTitle, Long unqUsrId, String useYn);
 
-  Boolean existsByPostTitle(String postTitle);
+  Boolean existsByPostTitleAndUseYn(String postTitle, String useYn);
 
-  Slice<PostMst> findByCategory(String category, Pageable pageable);
+  Slice<PostMst> findByCategoryAndUseYn(String category, Pageable pageable, String useYn);
 
-  Optional<PostMst> findTopByOrderByPostIdDesc();
+  Optional<PostMst> findTopByUseYnOrderByPostIdDesc(String useYn);
 }

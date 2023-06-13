@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface FileMstRepository extends JpaRepository<FileMst, FileMstPk> {
 
-  Optional<FileMst> findByfileId(int fileId);
-  FileMst findByfileIdOrderByFileIdDesc (int fileId);
+  Optional<FileMst> findByfileIdAndUseYn(int fileId,String useYn);
+  FileMst findByfileIdAndUseYnOrderByFileIdDesc(int fileId, String useYn);
 
-  Optional<FileMst> findTopByOrderByFileIdDesc();
+  Optional<FileMst> findTopByUseYnOrderByFileIdDesc(String useYn);
 }

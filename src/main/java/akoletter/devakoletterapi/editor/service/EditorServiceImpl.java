@@ -99,11 +99,11 @@ public class EditorServiceImpl implements EditorService {
     }
     MemberMst memberMst = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
     Long unqUsrId = memberMst.getUnqUsrId();
-    if (postMstRepository.existsByPostTitle(title)) {
+    if (postMstRepository.existsByPostTitleAndUseYn(title, "Y")) {
       savePostResponse.setSuccess("exists");
       return savePostResponse;
     }
-    PostMst last = postMstRepository.findTopByOrderByPostIdDesc().orElse(null);
+    PostMst last = postMstRepository.findTopByUseYnOrderByPostIdDesc("Y").orElse(null);
     Long postId = 1L;
     if (last != null) {
       postId = last.getPostId() + 1;

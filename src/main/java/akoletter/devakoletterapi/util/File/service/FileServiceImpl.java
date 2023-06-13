@@ -21,7 +21,7 @@ public class FileServiceImpl implements FileService {
   ) throws Exception {
     // 파일을 저장하고 그 Board 에 대한 list 를 가지고 있는다
 
-    FileMst last = fileMstRepository.findTopByOrderByFileIdDesc().orElse(null);
+    FileMst last = fileMstRepository.findTopByUseYnOrderByFileIdDesc("Y").orElse(null);
     int fileId = 1;
     if (last != null) {
       fileId = last.getFileId() + 1;

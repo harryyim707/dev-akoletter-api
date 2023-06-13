@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public ResponseEntity<?> getPostDetail(long postId) {
-    PostMst postMst = postMstRepository.findByPostId(postId).orElse(null);
+    PostMst postMst = postMstRepository.findByPostIdAndUseYn(postId, "Y").orElse(null);
     GetPostDetailResponse postDetailResponse = new GetPostDetailResponse();
     postDetailResponse.setPostId(postMst.getPostId());
     postDetailResponse.setPostTitle(postMst.getPostTitle());
@@ -75,9 +75,9 @@ public class PostServiceImpl implements PostService {
     pageable = PageRequest.of(0, size, Sort.by("postId").descending());
     Slice<PostMst> res = null;
     if (!"all".equals(category)) {
-      res = postMstRepository.findByCategory(category, pageable);
+      res = postMstRepository.findByCategoryAndUseYn(category, pageable, "Y");
     } else {
-      res = postMstRepository.findBy(pageable);
+      res = postMstRepository.findByUseYn(pageable, "Y");
     }
     List<PostListDomain> postList = new ArrayList<>();
     for(PostMst o: res.getContent()){
@@ -101,8 +101,8 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public ResponseEntity<?> showImage(int fileId) throws IOException {
-    FileMst defaultImage = fileMstRepository.findByfileId(defaultImageId).orElse(null);
-    FileMst fileMst = fileMstRepository.findByfileId(fileId).orElse(defaultImage);
+    FileMst defaultImage = fileMstRepository.findByfileIdAndUseYn(defaultImageId, "Y").orElse(null);
+    FileMst fileMst = fileMstRepository.findByfileIdAndUseYn(fileId, "Y").orElse(defaultImage);
     String name = defaultImage.getFileNm();
     if(fileMst.getFileNm() != null){
       name = fileMst.getFileNm();
@@ -119,14 +119,20 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public  ResponseEntity<?> deletePost(DeletePostRequest request){
-    PostMst postMst = postMstRepository.findByPostId(request.getPostId()).orElse(null);
+    PostMst postMst = postMstRepository.findByPostIdAndUseYn(request.getPostId(), "Y").orElse(null);
     postMst.setUseYn("N");
     int fileno = postMst.getFileId();
-    FileMst fileMst = fileMstRepository.findByfileIdOrderByFileIdDesc(fileno);
-    FileMst fileMst2 = fileMstRepository.findByfileIdOrderByFileIdDesc(fileno+1);
-    FileMst fileMst3 = fileMstRepository.findByfileIdOrderByFileIdDesc(fileno+2);
+    FileMst fileMst = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno, "Y");
+    FileMst fileMst2 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno+1, "Y");
+    FileMst fileMst3 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno+2, "Y");
+    BlobClient blob_1 = blobContainerClient.getBlobClient(fileMst.getFileNm());
+    BlobClient blob_2 = blobContainerClient.getBlobClient(fileMst2.getFileNm());
+    BlobClient blob_3 = blobContainerClient.getBlobClient(fileMst3.getFileNm());
+    blob_1.delete();
     fileMst.setUseYn("N");
+    blob_2.delete();
     fileMst2.setUseYn("N");
+    blob_3.delete();
     fileMst3.setUseYn("N");
     postMstRepository.save(postMst);
     fileMstRepository.save(fileMst);
