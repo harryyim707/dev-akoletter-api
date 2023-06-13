@@ -1,6 +1,5 @@
 package akoletter.devakoletterapi.post.service;
 
-import akoletter.devakoletterapi.jpa.authority.entity.Authority;
 import akoletter.devakoletterapi.jpa.filemst.entity.FileMst;
 import akoletter.devakoletterapi.jpa.filemst.repo.FileMstRepository;
 import akoletter.devakoletterapi.jpa.membermst.entity.MemberMst;
@@ -15,17 +14,11 @@ import akoletter.devakoletterapi.util.response.Response;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -80,21 +73,22 @@ public class PostServiceImpl implements PostService {
       res = postMstRepository.findByUseYn(pageable, "Y");
     }
     List<PostListDomain> postList = new ArrayList<>();
-    for(PostMst o: res.getContent()){
+    for (PostMst o : res.getContent()) {
       PostListDomain domain = new PostListDomain();
-      domain.setPostId(o.getPostId());
-      domain.setPostTitle(o.getPostTitle());
-      MemberMst memberMst = memberMstRepository.findByUnqUsrId(o.getUnqUsrId()).orElse(null);
-      assert memberMst != null;
-      String usrId = memberMst.getUsrId();
-      domain.setUsrId(usrId);
-      domain.setFileId(o.getFileId());
-      String date = o.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-      domain.setCategory(o.getCategory());
-      domain.setFrstRgsDt(date);
-      postList.add(domain);
+      if (o.getUseYn().equals("Y")) {
+        domain.setPostId(o.getPostId());
+        domain.setPostTitle(o.getPostTitle());
+        MemberMst memberMst = memberMstRepository.findByUnqUsrId(o.getUnqUsrId()).orElse(null);
+        assert memberMst != null;
+        String usrId = memberMst.getUsrId();
+        domain.setUsrId(usrId);
+        domain.setFileId(o.getFileId());
+        String date = o.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        domain.setCategory(o.getCategory());
+        domain.setFrstRgsDt(date);
+        postList.add(domain);
+      }
     }
-
     return response.success(postList, "게시글리스트 불러오기 성공.",
         HttpStatus.OK);
   }
@@ -104,7 +98,7 @@ public class PostServiceImpl implements PostService {
     FileMst defaultImage = fileMstRepository.findByfileIdAndUseYn(defaultImageId, "Y").orElse(null);
     FileMst fileMst = fileMstRepository.findByfileIdAndUseYn(fileId, "Y").orElse(defaultImage);
     String name = defaultImage.getFileNm();
-    if(fileMst.getFileNm() != null){
+    if (fileMst.getFileNm() != null) {
       name = fileMst.getFileNm();
     }
     BlobClient blob = blobContainerClient.getBlobClient(name);
@@ -118,13 +112,13 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public  ResponseEntity<?> deletePost(DeletePostRequest request){
+  public ResponseEntity<?> deletePost(DeletePostRequest request) {
     PostMst postMst = postMstRepository.findByPostIdAndUseYn(request.getPostId(), "Y").orElse(null);
     postMst.setUseYn("N");
     int fileno = postMst.getFileId();
     FileMst fileMst = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno, "Y");
-    FileMst fileMst2 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno+1, "Y");
-    FileMst fileMst3 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno+2, "Y");
+    FileMst fileMst2 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno + 1, "Y");
+    FileMst fileMst3 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno + 2, "Y");
     BlobClient blob_1 = blobContainerClient.getBlobClient(fileMst.getFileNm());
     BlobClient blob_2 = blobContainerClient.getBlobClient(fileMst2.getFileNm());
     BlobClient blob_3 = blobContainerClient.getBlobClient(fileMst3.getFileNm());
