@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,7 +30,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig  {
   private final JwtProvider jwtProvider;
   private final RedisTemplate<String, String> redisTemplate;
   @Bean
@@ -49,6 +51,16 @@ public class SecurityConfig {
                 config.setAllowedMethods(
                     List.of("*")
                 );
+                config.setAllowedOrigins(List.of("https://nojaewon.github.io/"));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                config.setAllowedHeaders(List.of("Authorization"));
+                config.setAllowCredentials(true);
+                config.addAllowedOriginPattern("*");
+                config.addAllowedHeader("*");
+                config.addAllowedMethod("*");
+                config.addExposedHeader("Authorization");
+                config.addExposedHeader("refreshToken");
+                config.addAllowedOrigin("https://nojaewon.github.io/");
                 return config;
               };
               c.configurationSource(source);
