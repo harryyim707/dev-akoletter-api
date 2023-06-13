@@ -58,6 +58,7 @@ public class PostServiceImpl implements PostService {
     postDetailResponse.setPostTitle(postMst.getPostTitle());
     postDetailResponse.setPostContent(postMst.getPostContent());
     postDetailResponse.setCategory(postMst.getCategory());
+    postDetailResponse.setUrlList(postMst.getUrlList());
     String date = postMst.getFrstRgstDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     postDetailResponse.setDate(date);
     MemberMst memberMst = memberMstRepository.findByUnqUsrId(postMst.getUnqUsrId()).orElse(null);
