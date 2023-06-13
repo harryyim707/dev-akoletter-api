@@ -111,6 +111,7 @@ public class EditorServiceImpl implements EditorService {
     postMst.setFrstRgstId(memberMst.getUsrId());
     postMst.setLastMdfyId(memberMst.getUsrId());
     postMst.setCategory(request.getCategory());
+    postMst.setUrlList(request.getUrlList());
     List<FileMst> list = fileService.saveFile(files);
     //file들을 저장하고 정보를 file.mst table에 추가.
     postMst.setFileId(list.get(0).getFileId());

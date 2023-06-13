@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,8 @@ public class PostServiceImpl implements PostService {
   private final PostMstRepository postMstRepository;
   private final FileMstRepository fileMstRepository;
   private final MemberMstRepository memberMstRepository;
-/*  @Value("${img.defaultid}")*/
-  int defaultImageId=1111;
+  @Value("${img.defaultid}")
+  int defaultImageId;
   @Autowired
   BlobContainerClient blobContainerClient;
 
@@ -118,7 +120,17 @@ public class PostServiceImpl implements PostService {
   public  ResponseEntity<?> deletePost(DeletePostRequest request){
     PostMst postMst = postMstRepository.findByPostId(request.getPostId()).orElse(null);
     postMst.setUseYn("N");
+    int fileno = postMst.getFileId();
+    FileMst fileMst = fileMstRepository.findByfileIdOrderByFileIdDesc(fileno);
+    FileMst fileMst2 = fileMstRepository.findByfileIdOrderByFileIdDesc(fileno+1);
+    FileMst fileMst3 = fileMstRepository.findByfileIdOrderByFileIdDesc(fileno+2);
+    fileMst.setUseYn("N");
+    fileMst2.setUseYn("N");
+    fileMst3.setUseYn("N");
     postMstRepository.save(postMst);
+    fileMstRepository.save(fileMst);
+    fileMstRepository.save(fileMst2);
+    fileMstRepository.save(fileMst3);
     return response.success("게시글 삭제가 완료되었습니다.");
   }
 }

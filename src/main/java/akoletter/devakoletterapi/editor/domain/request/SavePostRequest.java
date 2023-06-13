@@ -25,6 +25,11 @@ public class SavePostRequest {
     @Schema(description = "게시글 작성자 id")
     private String usrId;
 
+    @Schema(description = "참고 url")
+    private String urlList;
+
+
+
 
 
 

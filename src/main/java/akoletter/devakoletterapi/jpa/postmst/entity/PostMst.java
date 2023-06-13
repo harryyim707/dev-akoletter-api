@@ -13,6 +13,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -53,7 +56,9 @@ public class PostMst extends BaseEntity {
   @Column(name = "fk_file_id3")
   @Schema(description = "첨부파일 id3")
   private int fileId3;
-
+  @Column(name = "url_list")
+  @Schema(description = "url")
+  private String urlList;
 
 
 }
