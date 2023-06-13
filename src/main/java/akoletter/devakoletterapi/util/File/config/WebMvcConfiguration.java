@@ -15,7 +15,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/**").addResourceLocations("file:///C:/Users/1/IdeaProjects/img_test/");
     }
 
-    public void addCorsMappings(CorsRegistry registry) {
+/*    public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "https://nojaewon.github.io/")
                 .exposedHeaders("jwt-token")
@@ -30,5 +30,5 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests();
 
-    }
+    }*/
 }
