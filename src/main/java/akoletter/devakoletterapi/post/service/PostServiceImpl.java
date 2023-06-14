@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -114,6 +115,12 @@ public class PostServiceImpl implements PostService {
   @Override
   public ResponseEntity<?> deletePost(DeletePostRequest request) {
     PostMst postMst = postMstRepository.findByPostIdAndUseYn(request.getPostId(), "Y").orElse(null);
+    if(postMst == null){
+      return response.fail("게시글이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+    if(!Objects.equals(request.getUnqUsrId(), postMst.getUnqUsrId())){
+      return response.fail("자신의 게시글이 아닙니다.", HttpStatus.BAD_REQUEST);
+    }
     postMst.setUseYn("N");
     int fileno = postMst.getFileId();
     FileMst fileMst = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno, "Y");

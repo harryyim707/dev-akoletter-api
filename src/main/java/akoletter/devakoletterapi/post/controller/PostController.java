@@ -36,7 +36,7 @@ public class PostController {
   }
 
   @DeleteMapping("/post/delete")
-  public ResponseEntity<?> deletePost(@RequestBody DeletePostRequest request) throws IOException {
+  public ResponseEntity<?> deletePost(@RequestBody DeletePostRequest request) {
     return postService.deletePost(request);
   }
 }

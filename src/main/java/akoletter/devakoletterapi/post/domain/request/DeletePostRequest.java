@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DeletePostRequest {
+    private Long unqUsrId;
     private Long postId;
 
 
