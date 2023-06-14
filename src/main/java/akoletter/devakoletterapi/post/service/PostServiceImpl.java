@@ -124,9 +124,17 @@ public class PostServiceImpl implements PostService {
     }
     postMst.setUseYn("N");
     int fileno = postMst.getFileId();
-    FileMst fileMst = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno, "Y");
-    FileMst fileMst2 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno + 1, "Y");
-    FileMst fileMst3 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno + 2, "Y");
+    FileMst fileMst = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno, "Y").orElse(null);
+    FileMst fileMst2 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno + 1, "Y").orElse(null);
+    FileMst fileMst3 = fileMstRepository.findByfileIdAndUseYnOrderByFileIdDesc(fileno + 2, "Y").orElse(null);
+    if(fileMst == null){
+      return response.fail("이미지 파일이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+    if(fileMst2 == null){
+      return response.fail("이미지 파일이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    }if(fileMst3 == null){
+      return response.fail("이미지 파일이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
     BlobClient blob_1 = blobContainerClient.getBlobClient(fileMst.getFileNm());
     BlobClient blob_2 = blobContainerClient.getBlobClient(fileMst2.getFileNm());
     BlobClient blob_3 = blobContainerClient.getBlobClient(fileMst3.getFileNm());
