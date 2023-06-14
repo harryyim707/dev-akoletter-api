@@ -35,7 +35,7 @@ public class PostController {
     return postService.showImage(fileId);
   }
 
-  @DeleteMapping("/post/delete")
+  @PostMapping("/post/delete")
   public ResponseEntity<?> deletePost(@RequestBody DeletePostRequest request) {
     return postService.deletePost(request);
   }
