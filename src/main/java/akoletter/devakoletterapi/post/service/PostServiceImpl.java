@@ -118,7 +118,8 @@ public class PostServiceImpl implements PostService {
     if(postMst == null){
       return response.fail("게시글이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
-    if(!Objects.equals(request.getUnqUsrId(), postMst.getUnqUsrId())){
+    MemberMst memberMst = memberMstRepository.findByUsrId(request.getUsrId()).orElse(null);
+    if(memberMst != null && !Objects.equals(memberMst.getUnqUsrId(), postMst.getUnqUsrId())){
       return response.fail("자신의 게시글이 아닙니다.", HttpStatus.BAD_REQUEST);
     }
     postMst.setUseYn("N");
