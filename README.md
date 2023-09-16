@@ -7,14 +7,14 @@
 It is a web page for a platform where people who want to subscribe to the card news editor of the category they are interested in and who want to be an editor and produce their own card news. Akoletter gives you an amazing experience of how easy it is to write a card news. Just put your article in the text box, with some references if you have. Then _Naver CLOVA Summary API_ will summarize your decent article into **THREE** lines on the card news template. _Naver CLOVA Summary API_ is an API that summarizes any text based articles into three lines. You can also give diverse options like languages, tone, and summary counts. This project is a graduation project of Dongguk University Capstone Design.
 ***
 ## Contents
- - [Dependencies](#Dependencies)
+ - [Technology Used](#technology-used)
  - [Goals](#Goals)
  - [Target](#Target)
  - [Quick Start](#quick-start)
  - [Some Pages](#some-pages)
 
 ***
-## Dependencies
+## Technology Used
 ![Spring Boot](https://img.shields.io/badge/springboot_3.0.4-444444?style=for-the-badge&logo=springboot) ![Gradle](https://img.shields.io/badge/gradle-444444?style=for-the-badge&logo=gradle) ![Java](https://img.shields.io/badge/Java_17-444444?style=for-the-badge&logo=Java&logoColor=white) ![Naver CLOVA Summary API](https://img.shields.io/badge/Naver_CLOVA_Summary_API-444444?style=for-the-badge&logo=naver)  <br/>
 ![Mysql](https://img.shields.io/badge/mysql_8.0.32-444444?style=for-the-badge&logo=mysql)
 ![Redis](https://img.shields.io/badge/redis-444444?style=for-the-badge&logo=redis)
