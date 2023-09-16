@@ -4,7 +4,7 @@
 <img src="https://user-images.githubusercontent.com/82192655/242472378-d7789f00-b6cf-4198-9017-c1342fe4912b.png" width=300>
 
 ## _The Card News Service in the form of SNS_
-It is a web page for a platform where people who want to subscribe to the card news editor of the category they are interested in and who want to be an editor and produce their own card news.Akoletter gives you an amazing experience of how easy it is to write a card news. Just put your article in the text box, with some references if you have. Then _Naver CLOVA Summary API_ will summarize your decent article into **THREE** lines on the card news template. _Naver CLOVA Summary API_ is an API that summarizes any text based articles into three lines. You can also give diverse options like languages, tone, and summary counts. This project is a graduation project of Dongguk University Capstone Design.
+It is a web page for a platform where people who want to subscribe to the card news editor of the category they are interested in and who want to be an editor and produce their own card news. Akoletter gives you an amazing experience of how easy it is to write a card news. Just put your article in the text box, with some references if you have. Then _Naver CLOVA Summary API_ will summarize your decent article into **THREE** lines on the card news template. _Naver CLOVA Summary API_ is an API that summarizes any text based articles into three lines. You can also give diverse options like languages, tone, and summary counts. This project is a graduation project of Dongguk University Capstone Design.
 ***
 ## Contents
  - [Dependencies](#Dependencies)
